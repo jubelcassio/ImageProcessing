@@ -1,0 +1,29 @@
+Description:
+A collection of python scripts for quick image processing.
+
+Planned Features:
+
+Must Have:
+Can be called from the root to affect files anywhere in the system.
+Can process a single image.
+Can process multiple images (such as all images from a given directory).
+Resize images to given dimensions.
+Resize images to given proportion (increase 2, reduce by 1/4, ...).
+Resize images to given dimensions while maintaining their proportions
+(add a background).
+Convert images to a given type.
+
+Should Have:
+Point to the destination directory of the images.
+Invert colors.
+Desaturated images.
+Able to decide which resizing algorithm to use.
+For the resizing while maintaining the proportion option, allow the user to
+choose the background color, with default as transparent.
+Mirror images (up, down, left or right).
+
+Could Have:
+Option to optimize images for web.
+Filter input images by name (with regex?).
+Filter input images by file type.
+Works on Linux and Windows.
