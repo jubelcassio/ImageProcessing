@@ -6,10 +6,11 @@ supported_formats = ["BMP","EPS","GIF","ICO","JPG","JPEG","PNG","TIFF","WEBP"]
 
 
 def convert(path, filetype):
-    # TODO: add check for same format as the original.
     if os.path.isfile(path):
         o_type = path[-3:]
-        if o_type.upper() in supported_formats:
+        if o_type.upper() == filetype.upper():
+            print("{} is already of type {}".format(path, filetype))
+        elif o_type.upper() in supported_formats:
             new_image_path = "{}.converted.{}".format(path[:-4], filetype)
             im = Image.open(path)
             im.save(new_image_path)
@@ -24,7 +25,9 @@ def convert(path, filetype):
         for file_ in file_list:
             f_path = os.path.join(path, file_)
             f_type = file_[-3:]
-            if f_type.upper() in supported_formats:
+            if f_type.upper() == filetype.upper():
+                print("{} is already of type {}".format(f_path, filetype))
+            elif f_type.upper() in supported_formats:
                 new_image_path = "{}.converted.{}".format(f_path[:-4], filetype)
                 im = Image.open(f_path)
                 im.save(new_image_path)
