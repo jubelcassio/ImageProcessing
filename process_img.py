@@ -9,9 +9,11 @@ actions = ['convert']
 def convert(path, filetype):
     if os.path.isfile(path):
         o_type = path[-3:]
-        if o_type == filetype:
+        if o_type not in supported_formats:
+            print("{} does not have a supported file type.".format(path))
+        elif o_type == filetype:
             print("{} is already of type {}".format(path, filetype))
-        elif o_type in supported_formats:
+        else:
             new_image_path = "{}.converted.{}".format(path[:-4], filetype)
             im = Image.open(path)
             im.save(new_image_path)
@@ -36,15 +38,14 @@ def convert(path, filetype):
         print(msg.format(path))
 
 
-
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(prog="process_img")
 
     parser.add_argument('action', type=str, choices=actions)
     parser.add_argument('path', type=str)
     parser.add_argument('filetype', type=str, choices=supported_formats)
 
-    args = parser.parse_args(sys.argv[1:])
+    args = parser.parse_args()
 
     if args.action == "convert":
             convert(args.path, args.filetype)
