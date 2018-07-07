@@ -104,7 +104,10 @@ def scale(path, proportion):
     new_image_path = "{}.scaled.{}".format(path[:-4], path[-3:])
     im = Image.open(path)
 
-    size = round(im.size[0] * proportion), round(im.size[1] * proportion)
+    # Minimum width/height is 1 pixel.
+    size = (max([1, round(im.size[0] * proportion)]),
+            max([1, round(im.size[1] * proportion)]))
+
     resized_im = im.resize(size)
     resized_im.save(new_image_path)
     print("{} saved successfully.".format(new_image_path))
