@@ -4,7 +4,8 @@ from PIL import Image
 import argparse
 
 supported_formats = ["bmp","eps","gif","ico","jpg","jpeg","png","tiff","webp"]
-actions = ['convert', 'resize']
+actions = ['convert', 'resize', 'scale']
+
 
 def convert(path, filetype):
     if path[-3:] == filetype:
@@ -14,6 +15,7 @@ def convert(path, filetype):
         im = Image.open(path)
         im.save(new_image_path)
         print("{} saved successfully.".format(new_image_path))
+
 
 def call_convert(pos_args):
     ## Parse the inputs
@@ -98,6 +100,53 @@ def call_resize(pos_args):
         print(msg.format(path))
 
 
+def scale(path, proportion):
+    new_image_path = "{}.scaled.{}".format(path[:-4], path[-3:])
+    im = Image.open(path)
+
+    size = round(im.size[0] * proportion), round(im.size[1] * proportion)
+    resized_im = im.resize(size)
+    resized_im.save(new_image_path)
+    print("{} saved successfully.".format(new_image_path))
+
+
+def call_scale(pos_args):
+    ## Parse the inputs
+    parser = argparse.ArgumentParser(prog="resize")
+
+    parser.add_argument('path', type=str)
+    parser.add_argument('proportion', type=float)
+
+    args = parser.parse_args(pos_args)
+
+    path, proportion = args.path, args.proportion
+
+
+    ## Scale single file
+    if os.path.isfile(path):
+        if path[-3:] not in supported_formats:
+            print("{} does not have a supported file type.".format(path))
+        else:
+            scale(path, proportion)
+
+
+    ## Scale files in directory
+    elif os.path.isdir(path):
+        file_list = os.listdir(path)
+
+        for file_ in file_list:
+            f_path = os.path.join(path, file_)
+            f_type = file_[-3:]
+            if f_type in supported_formats:
+                scale(f_path, proportion)
+
+    else:
+        msg = "{} is not a valid file path or directory."
+        print(msg.format(path))
+
+
+
+
 if __name__ == '__main__':
     '''
     python process_img.py [action] [arguments]
@@ -108,5 +157,7 @@ if __name__ == '__main__':
         call_convert(sys.argv[2:])
     if action == "resize":
         call_resize(sys.argv[2:])
+    if action == "scale":
+        call_scale(sys.argv[2:])
     else:
         print("Invalid action: '{}', choose from: {}".format(action, actions))
