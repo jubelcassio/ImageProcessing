@@ -1,3 +1,19 @@
+'''
+General use scripts for image processing.
+
+Usage:
+    python process_img.py [action] [arguments]
+
+Available actions:
+    * convert: Converts image(s) to given format.
+        python process_img.py convert [file/directory] [format to convert]
+    * resize: Resizes image(s) to given width and height.
+        python process_img.py resize [file/directory] [width] [height]
+    * scale: Scale image(s) by given scalar.
+        python process_img.py scale [file/directory] [scalar]
+'''
+
+
 import sys
 import os
 from PIL import Image
@@ -100,13 +116,13 @@ def call_resize(pos_args):
         print(msg.format(path))
 
 
-def scale(path, proportion):
+def scale(path, scalar):
     new_image_path = "{}.scaled.{}".format(path[:-4], path[-3:])
     im = Image.open(path)
 
     # Minimum width/height is 1 pixel.
-    size = (max([1, round(im.size[0] * proportion)]),
-            max([1, round(im.size[1] * proportion)]))
+    size = (max([1, round(im.size[0] * scalar)]),
+            max([1, round(im.size[1] * scalar)]))
 
     resized_im = im.resize(size)
     resized_im.save(new_image_path)
@@ -118,11 +134,11 @@ def call_scale(pos_args):
     parser = argparse.ArgumentParser(prog="resize")
 
     parser.add_argument('path', type=str)
-    parser.add_argument('proportion', type=float)
+    parser.add_argument('scalar', type=float)
 
     args = parser.parse_args(pos_args)
 
-    path, proportion = args.path, args.proportion
+    path, scalar = args.path, args.scalar
 
 
     ## Scale single file
@@ -130,7 +146,7 @@ def call_scale(pos_args):
         if path[-3:] not in supported_formats:
             print("{} does not have a supported file type.".format(path))
         else:
-            scale(path, proportion)
+            scale(path, scalar)
 
 
     ## Scale files in directory
@@ -141,7 +157,7 @@ def call_scale(pos_args):
             f_path = os.path.join(path, file_)
             f_type = file_[-3:]
             if f_type in supported_formats:
-                scale(f_path, proportion)
+                scale(f_path, scalar)
 
     else:
         msg = "{} is not a valid file path or directory."
@@ -151,9 +167,6 @@ def call_scale(pos_args):
 
 
 if __name__ == '__main__':
-    '''
-    python process_img.py [action] [arguments]
-    '''
     action = sys.argv[1]
 
     if action == "convert":
