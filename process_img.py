@@ -6,7 +6,16 @@ import argparse
 supported_formats = ["bmp","eps","gif","ico","jpg","jpeg","png","tiff","webp"]
 actions = ['convert']
 
-def convert(path, filetype):
+def convert(pos_args):
+    parser = argparse.ArgumentParser(prog="convert")
+
+    parser.add_argument('path', type=str)
+    parser.add_argument('filetype', type=str, choices=supported_formats)
+
+    args = parser.parse_args(pos_args)
+
+    path, filetype = args.path, args.filetype
+
     if os.path.isfile(path):
         o_type = path[-3:]
         if o_type not in supported_formats:
@@ -39,13 +48,12 @@ def convert(path, filetype):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog="process_img")
+    '''
+    python process_img.py [action] [arguments]
+    '''
+    action = sys.argv[1]
 
-    parser.add_argument('action', type=str, choices=actions)
-    parser.add_argument('path', type=str)
-    parser.add_argument('filetype', type=str, choices=supported_formats)
-
-    args = parser.parse_args()
-
-    if args.action == "convert":
-            convert(args.path, args.filetype)
+    if action == "convert":
+        convert(sys.argv[2:])
+    else:
+        print("Invalid action: '{}', choose from: {}".format(action, actions))
