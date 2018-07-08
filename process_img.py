@@ -14,17 +14,41 @@ Available actions:
     * fit: Resize an image to a given width / height while maintaining its
             aspect ratio, offset area is transparent or filled with a white
             background.
-        python process_img.py fit [file/directory] [width] [height]
+            A hexadecimal color value can be passed for the background with the
+            'color' optional argument.
+            The alpha optional argument sets the transparency of the background,
+            but only if the original file's mode is RGBA.
+        python process_img.py fit [file/directory] [width] [height] [--color] [--alpha]
 '''
 
 
 import sys
 import os
-from PIL import Image
+from PIL import Image, ImageColor
 import argparse
+import re
 
 supported_formats = ["bmp","eps","gif","ico","jpg","jpeg","png","tiff","webp"]
 actions = ['convert', 'resize', 'scale', 'fit']
+
+
+def hex_code(string):
+    # Validator for hexadecimal colors.
+    if re.match("^#(?:[0-9a-fA-F]{3}){1,2}$", string) is None:
+        msg = "{} is not a valid hex code.".format(string)
+        raise argparse.ArgumentTypeError(msg)
+    return string
+
+def eight_bit(n):
+    try:
+        n = int(n)
+    except:
+        msg = "alpha value {} must be a integer between 0 and 255".format(n)
+        raise argparse.ArgumentTypeError(msg)
+    if not (0 <= n & n < 256):
+        msg = "alpha value {} must be between 0 and 255".format(n)
+        raise argparse.ArgumentTypeError(msg)
+    return n
 
 
 def convert(path, filetype):
@@ -135,7 +159,7 @@ def scale(path, scalar):
 
 def call_scale(pos_args):
     ## Parse the inputs
-    parser = argparse.ArgumentParser(prog="resize")
+    parser = argparse.ArgumentParser(prog="scale")
 
     parser.add_argument('path', type=str)
     parser.add_argument('scalar', type=float)
@@ -168,11 +192,12 @@ def call_scale(pos_args):
         print(msg.format(path))
 
 
-def fit(path, size):
+def fit(path, size, color, alpha):
     f_type = path[-3:]
     new_image_path = "{}.fit_{}_{}.{}".format(path[:-4], size[0], size[1], f_type)
     im = Image.open(path)
-    new_im = Image.new(im.mode, size)
+    color = (*ImageColor.getrgb(color), alpha)
+    new_im = Image.new(im.mode, size, color=color)
 
     im_ratio = im.width / im.height
     new_im_ratio = new_im.width / new_im.height
@@ -206,18 +231,21 @@ def call_fit(pos_args):
     parser.add_argument('path', type=str)
     parser.add_argument('width', type=int)
     parser.add_argument('height', type=int)
-
+    parser.add_argument('-c', '--color', type=hex_code, default="#fff")
+    parser.add_argument('-a', '--alpha', type=eight_bit, default=255)
     args = parser.parse_args(pos_args)
 
-    path, size = args.path, (args.width, args.height)
-
+    path  = args.path
+    size  = (args.width, args.height)
+    color = args.color
+    alpha = args.alpha
 
     ## Fit single file
     if os.path.isfile(path):
         if path[-3:] not in supported_formats:
             print("{} does not have a supported file type.".format(path))
         else:
-            fit(path, size)
+            fit(path, size, color, alpha)
 
 
     ## Fit files in directory
@@ -228,7 +256,7 @@ def call_fit(pos_args):
             f_path = os.path.join(path, file_)
             f_type = file_[-3:]
             if f_type in supported_formats:
-                fit(f_path, size)
+                fit(f_path, size, color, alpha)
 
     else:
         msg = "{} is not a valid file path or directory."
@@ -241,11 +269,11 @@ if __name__ == '__main__':
 
     if action == "convert":
         call_convert(sys.argv[2:])
-    if action == "resize":
+    elif action == "resize":
         call_resize(sys.argv[2:])
-    if action == "scale":
+    elif action == "scale":
         call_scale(sys.argv[2:])
-    if action == "fit":
+    elif action == "fit":
         call_fit(sys.argv[2:])
     else:
         print("Invalid action: '{}', choose from: {}".format(action, actions))
