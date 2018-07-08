@@ -5,6 +5,10 @@ from actions import supported_formats
 
 
 def scale(path, scalar):
+    if path[-3:] not in supported_formats:
+        print("{} does not have a supported file type.".format(path))
+        return
+
     new_image_path = "{}.scaled.{}".format(path[:-4], path[-3:])
     im = Image.open(path)
 
@@ -17,25 +21,24 @@ def scale(path, scalar):
     print("{} saved successfully.".format(new_image_path))
 
 
-def call_scale(pos_args):
+def parse(user_args):
     ## Parse the inputs
     parser = argparse.ArgumentParser(prog="scale")
 
     parser.add_argument('path', type=str)
     parser.add_argument('scalar', type=float)
 
-    args = parser.parse_args(pos_args)
+    args = parser.parse_args(user_args)
 
-    path, scalar = args.path, args.scalar
+    return args.path, args.scalar
 
+
+def call_scale(user_args):
+    path, scalar = parse(user_args)
 
     ## Scale single file
     if os.path.isfile(path):
-        if path[-3:] not in supported_formats:
-            print("{} does not have a supported file type.".format(path))
-        else:
-            scale(path, scalar)
-
+        scale(path, scalar)
 
     ## Scale files in directory
     elif os.path.isdir(path):
@@ -43,8 +46,7 @@ def call_scale(pos_args):
 
         for file_ in file_list:
             f_path = os.path.join(path, file_)
-            f_type = file_[-3:]
-            if f_type in supported_formats:
+            if os.path.isfile(f_path):
                 scale(f_path, scalar)
 
     else:
