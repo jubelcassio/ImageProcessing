@@ -24,6 +24,10 @@ def eight_bit(n):
 
 
 def fit(path, size, color, alpha):
+    if path[-3:] not in supported_formats:
+        print("{} does not have a supported file type.".format(path))
+        return
+
     f_type = path[-3:]
     new_image_path = "{}.fit_{}_{}.{}".format(path[:-4], size[0], size[1], f_type)
     im = Image.open(path)
@@ -55,7 +59,7 @@ def fit(path, size, color, alpha):
     print("{} saved successfully.".format(new_image_path))
 
 
-def call_fit(pos_args):
+def parse(user_args):
     ## Parse the inputs
     parser = argparse.ArgumentParser(prog="fit")
 
@@ -64,19 +68,18 @@ def call_fit(pos_args):
     parser.add_argument('height', type=int)
     parser.add_argument('-c', '--color', type=hex_code, default="#fff")
     parser.add_argument('-a', '--alpha', type=eight_bit, default=255)
-    args = parser.parse_args(pos_args)
+    args = parser.parse_args(user_args)
 
-    path  = args.path
-    size  = (args.width, args.height)
-    color = args.color
-    alpha = args.alpha
+    return args.path, (args.width, args.height), args.color, args.alpha
+
+
+def call_fit(user_args):
+
+    path, size, color, alpha = parse(user_args)
 
     ## Fit single file
     if os.path.isfile(path):
-        if path[-3:] not in supported_formats:
-            print("{} does not have a supported file type.".format(path))
-        else:
-            fit(path, size, color, alpha)
+        fit(path, size, color, alpha)
 
 
     ## Fit files in directory
@@ -85,8 +88,7 @@ def call_fit(pos_args):
 
         for file_ in file_list:
             f_path = os.path.join(path, file_)
-            f_type = file_[-3:]
-            if f_type in supported_formats:
+            if os.path.isfile(f_path):
                 fit(f_path, size, color, alpha)
 
     else:
