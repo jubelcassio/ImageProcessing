@@ -23,16 +23,16 @@ def eight_bit(n):
     return n
 
 
-def fit(path, size, color, alpha):
+def run(path, width, height, color, alpha):
     if path[-3:] not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
 
     f_type = path[-3:]
-    new_image_path = "{}.fit_{}_{}.{}".format(path[:-4], size[0], size[1], f_type)
+    new_image_path = "{}.fit_{}_{}.{}".format(path[:-4], width, height, f_type)
     im = Image.open(path)
     color = (*ImageColor.getrgb(color), alpha)
-    new_im = Image.new(im.mode, size, color=color)
+    new_im = Image.new(im.mode, (width, height), color=color)
 
     im_ratio = im.width / im.height
     new_im_ratio = new_im.width / new_im.height
@@ -63,34 +63,10 @@ def parse(user_args):
     ## Parse the inputs
     parser = argparse.ArgumentParser(prog="fit")
 
-    parser.add_argument('path', type=str)
     parser.add_argument('width', type=int)
     parser.add_argument('height', type=int)
     parser.add_argument('-c', '--color', type=hex_code, default="#fff")
     parser.add_argument('-a', '--alpha', type=eight_bit, default=255)
     args = parser.parse_args(user_args)
 
-    return args.path, (args.width, args.height), args.color, args.alpha
-
-
-def call_fit(user_args):
-
-    path, size, color, alpha = parse(user_args)
-
-    ## Fit single file
-    if os.path.isfile(path):
-        fit(path, size, color, alpha)
-
-
-    ## Fit files in directory
-    elif os.path.isdir(path):
-        file_list = os.listdir(path)
-
-        for file_ in file_list:
-            f_path = os.path.join(path, file_)
-            if os.path.isfile(f_path):
-                fit(f_path, size, color, alpha)
-
-    else:
-        msg = "{} is not a valid file path or directory."
-        print(msg.format(path))
+    return vars(args)

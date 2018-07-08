@@ -4,7 +4,7 @@ from PIL import Image
 from actions import supported_formats
 
 
-def scale(path, scalar):
+def run(path, scalar):
     if path[-3:] not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
@@ -25,30 +25,6 @@ def parse(user_args):
     ## Parse the inputs
     parser = argparse.ArgumentParser(prog="scale")
 
-    parser.add_argument('path', type=str)
     parser.add_argument('scalar', type=float)
 
-    args = parser.parse_args(user_args)
-
-    return args.path, args.scalar
-
-
-def call_scale(user_args):
-    path, scalar = parse(user_args)
-
-    ## Scale single file
-    if os.path.isfile(path):
-        scale(path, scalar)
-
-    ## Scale files in directory
-    elif os.path.isdir(path):
-        file_list = os.listdir(path)
-
-        for file_ in file_list:
-            f_path = os.path.join(path, file_)
-            if os.path.isfile(f_path):
-                scale(f_path, scalar)
-
-    else:
-        msg = "{} is not a valid file path or directory."
-        print(msg.format(path))
+    return vars(parser.parse_args(user_args))
