@@ -9,6 +9,6 @@ supported_modes = {
     "png":  ["1","L","P","RGB", "RGBA"],
     "tiff": ["1","L", "LAB","P", "CMYK","RGB", "RGBA"]
 }
-__all__ = ['convert', 'resize', 'fit', 'scale']
+__all__ = ['convert', 'resize', 'fit', 'scale', 'info']
 
 from . import *

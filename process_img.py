@@ -11,7 +11,7 @@ import re
 from actions import *
 
 
-action_list = ['convert', 'resize', 'scale', 'fit']
+action_list = ['convert', 'resize', 'scale', 'fit', 'info']
 
 def call_action(action, path, user_args):
     '''
@@ -50,6 +50,8 @@ if __name__ == '__main__':
         call_action(scale, sys.argv[2], sys.argv[3:])
     elif action == "fit":
         call_action(fit, sys.argv[2], sys.argv[3:])
+    elif action == "info":
+        call_action(info, sys.argv[2], sys.argv[3:])
     else:
         msg = "Invalid action: '{}', choose from: {}".format(action,
                                                              action_list)
