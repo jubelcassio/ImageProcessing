@@ -25,7 +25,8 @@ def eight_bit(n):
 
 
 def run(path, width, height, color, alpha, save_as):
-    if path[-3:] not in supported_formats:
+    extension = os.path.splitext(filename)[1]
+    if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
 
@@ -33,7 +34,7 @@ def run(path, width, height, color, alpha, save_as):
     color = (*ImageColor.getrgb(color), alpha)
 
     if save_as == None:
-        save_as = path[-3:]
+        save_as = extension
 
 
     if im.mode in supported_modes[save_as]:

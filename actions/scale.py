@@ -6,14 +6,15 @@ from actions import supported_modes
 
 
 def run(path, scalar, save_as):
-    if path[-3:] not in supported_formats:
+    extension = os.path.splitext(filename)[1]
+    if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
 
     im = Image.open(path)
 
     if save_as == None:
-        save_as = path[-3:]
+        save_as = extension
     if im.mode not in supported_modes[save_as]:
         new_mode = supported_modes[save_as][-1]
         im = im.convert(new_mode)

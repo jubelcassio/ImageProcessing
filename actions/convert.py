@@ -5,7 +5,8 @@ from actions import supported_formats
 from actions import supported_modes
 
 def run(path, filetype, mode):
-    if path[-3:] not in supported_formats:
+    extension = os.path.splitext(filename)[1]
+    if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
     else:
         new_image_path = "{}.converted.{}".format(path[:-4], filetype)

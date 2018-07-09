@@ -5,7 +5,7 @@ from actions import supported_formats
 from actions import supported_modes
 
 def run(path):
-    extension = path.split(".")[-1]
+    extension = os.path.splitext(filename)[1]
     if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
     else:
