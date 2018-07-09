@@ -21,11 +21,11 @@ def call_action(action, path, user_args):
     '''
     kwargs = action.parse(user_args)
 
-    ## Convert single file
+    ## Execute script on a single file.
     if os.path.isfile(path):
         action.run(path, **kwargs)
 
-    ## Convert files in directory
+    ## Execute script on all image files in a directory.
     elif os.path.isdir(path):
         file_list = os.listdir(path)
         for file_ in file_list:
