@@ -4,7 +4,7 @@ from PIL import Image
 from actions import supported_formats
 from actions import supported_modes
 
-def run(path, filetype):
+def run(path, filetype, mode):
     if path[-3:] not in supported_formats:
         print("{} does not have a supported file type.".format(path))
     elif path[-3:] == filetype:
@@ -12,13 +12,21 @@ def run(path, filetype):
     else:
         new_image_path = "{}.converted.{}".format(path[:-4], filetype)
         im = Image.open(path)
-        if im.mode in supported_modes[filetype]:
-            new_im = im
-        else:
-            new_mode = supported_modes[filetype][-1]
-            new_im = im.convert(new_mode)
-            print("Converting {} to {} image...".format(im.mode, new_mode))
-        new_im.save(new_image_path)
+
+        if mode == None:
+            mode = im.mode
+
+        if mode not in supported_modes[filetype]:
+            msg = "{} is not supported by the {} image writer."
+            print(msg.format(mode, filetype))
+
+            mode = supported_modes[filetype][-1]
+
+        if mode != im.mode:
+            print("Converting {} to {} image...".format(im.mode, mode))
+            im = im.convert(mode)
+
+        im.save(new_image_path)
         print("{} saved successfully.".format(new_image_path))
 
 def parse(user_args):
@@ -26,5 +34,6 @@ def parse(user_args):
     parser = argparse.ArgumentParser(prog="convert")
 
     parser.add_argument('filetype', type=str, choices=supported_formats)
+    parser.add_argument('--mode', type=str, default=None)
 
     return vars(parser.parse_args(user_args))
