@@ -7,8 +7,6 @@ from actions import supported_modes
 def run(path, filetype, mode):
     if path[-3:] not in supported_formats:
         print("{} does not have a supported file type.".format(path))
-    elif path[-3:] == filetype:
-        print("{} is already of type {}".format(path, filetype))
     else:
         new_image_path = "{}.converted.{}".format(path[:-4], filetype)
         im = Image.open(path)
