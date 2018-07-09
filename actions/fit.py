@@ -13,6 +13,7 @@ def hex_code(string):
     return string
 
 def eight_bit(n):
+    # Asserts n is an integer between 0 and 255
     try:
         n = int(n)
     except:
@@ -25,18 +26,20 @@ def eight_bit(n):
 
 
 def run(path, width, height, color, alpha, save_as):
-    extension = os.path.splitext(filename)[1]
+    extension = os.path.splitext(path)[1][1:]
     if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
 
     im = Image.open(path)
+
+    # background color
     color = (*ImageColor.getrgb(color), alpha)
 
     if save_as == None:
         save_as = extension
 
-
+    # Change the image mode, if needed.
     if im.mode in supported_modes[save_as]:
         mode = im.mode
     else:
@@ -44,6 +47,8 @@ def run(path, width, height, color, alpha, save_as):
         print("Converting {} to {} image...".format(im.mode, mode))
 
     new_im = Image.new(mode, (width, height), color=color)
+
+    # New name, so the original image isn't overwritten
     new_image_path = "{}.fit_{}_{}.{}".format(path[:-4], width, height, save_as)
 
     im_ratio = im.width / im.height
@@ -53,16 +58,20 @@ def run(path, width, height, color, alpha, save_as):
     if im_ratio == new_im_ratio:
         resized_im = im.resize((new_im.width, new_im.height))
         topleft = (0, 0)
+
     # im has to fit on new_im's height
     if im_ratio < new_im_ratio:
-        width = round((new_im.height / im.height) * im.width)
+        # Minimum width is 1 pixel.
+        width = max([1, round((new_im.height / im.height) * im.width)])
         height = new_im.height
         resized_im = im.resize((width, height))
         topleft = ((new_im.width - width) // 2, 0)
+
     # im has to fit on new_im's width
     if im_ratio > new_im_ratio:
         width = new_im.width
-        height = round((new_im.width / im.width) * im.height)
+        # Minimum height is 1 pixel.
+        height = max([1, round((new_im.width / im.width) * im.height)])
         topleft = (0, (new_im.height - height) // 2)
         resized_im = im.resize((width, height))
 

@@ -6,7 +6,7 @@ from actions import supported_modes
 
 
 def run(path, scalar, save_as):
-    extension = os.path.splitext(filename)[1]
+    extension = os.path.splitext(path)[1][1:]
     if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
@@ -15,11 +15,14 @@ def run(path, scalar, save_as):
 
     if save_as == None:
         save_as = extension
+
+    # Change the image mode, if needed
     if im.mode not in supported_modes[save_as]:
         new_mode = supported_modes[save_as][-1]
         im = im.convert(new_mode)
         print("Converting {} to {} image...".format(im.mode, new_mode))
 
+    # New name, so the original image isn't overwritten
     new_image_path = "{}.scaled.{}".format(path[:-4], save_as)
 
     # Minimum width/height is 1 pixel.

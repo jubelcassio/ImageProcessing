@@ -5,28 +5,32 @@ from actions import supported_formats
 from actions import supported_modes
 
 def run(path, filetype, mode):
-    extension = os.path.splitext(filename)[1]
+    extension = os.path.splitext(path)[1][1:]
     if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
-    else:
-        new_image_path = "{}.converted.{}".format(path[:-4], filetype)
-        im = Image.open(path)
+        return
 
-        if mode == None:
-            mode = im.mode
+    # New name, so the original image isn't overwritten
+    new_image_path = "{}.converted.{}".format(path[:-4], filetype)
 
-        if mode not in supported_modes[filetype]:
-            msg = "{} is not supported by the {} image writer."
-            print(msg.format(mode, filetype))
+    im = Image.open(path)
 
-            mode = supported_modes[filetype][-1]
+    # Change the image mode, if needed:
+    if mode == None:
+        mode = im.mode
 
-        if mode != im.mode:
-            print("Converting {} to {} image...".format(im.mode, mode))
-            im = im.convert(mode)
+    if mode not in supported_modes[filetype]:
+        msg = "{} is not supported by the {} image writer."
+        print(msg.format(mode, filetype))
 
-        im.save(new_image_path)
-        print("{} saved successfully.".format(new_image_path))
+        mode = supported_modes[filetype][-1]
+
+    if mode != im.mode:
+        print("Converting {} to {} image...".format(im.mode, mode))
+        im = im.convert(mode)
+
+    im.save(new_image_path)
+    print("{} saved successfully.".format(new_image_path))
 
 def parse(user_args):
     ## Parse the inputs

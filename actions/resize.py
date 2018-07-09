@@ -5,22 +5,27 @@ from actions import supported_formats
 from actions import supported_modes
 
 def run(path, width, height, save_as):
-    extension = os.path.splitext(filename)[1]
-    size = (width, height)
+    extension = os.path.splitext(path)[1][1:]
     if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
 
+    # Minimum width and height is 1
+    size = (max([1, width]), max([1, height]))
+
     im = Image.open(path)
+
 
     if save_as == None:
         save_as = extension
-    else:
-        if im.mode not in supported_modes[save_as]:
-            new_mode = supported_modes[save_as][-1]
-            im = im.convert(new_mode)
-            print("Converting {} to {} image...".format(im.mode, new_mode))
 
+    # Change the image mode, if needed.
+    if im.mode not in supported_modes[save_as]:
+        new_mode = supported_modes[save_as][-1]
+        im = im.convert(new_mode)
+        print("Converting {} to {} image...".format(im.mode, new_mode))
+
+    # New name, so the original image isn't overwritten
     new_image_path = "{}.resized.{}".format(path[:-4], save_as)
 
     if im.size == size:
