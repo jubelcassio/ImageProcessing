@@ -2,6 +2,7 @@ import argparse
 import os
 from PIL import Image, ImageColor
 from actions import supported_formats
+from actions import supported_modes
 import re
 
 def hex_code(string):
@@ -23,16 +24,26 @@ def eight_bit(n):
     return n
 
 
-def run(path, width, height, color, alpha):
+def run(path, width, height, color, alpha, save_as):
     if path[-3:] not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
 
-    f_type = path[-3:]
-    new_image_path = "{}.fit_{}_{}.{}".format(path[:-4], width, height, f_type)
     im = Image.open(path)
     color = (*ImageColor.getrgb(color), alpha)
-    new_im = Image.new(im.mode, (width, height), color=color)
+
+    if save_as == None:
+        save_as = path[-3:]
+
+
+    if im.mode in supported_modes[save_as]:
+        mode = im.mode
+    else:
+        mode = supported_modes[save_as][-1]
+        print("Converting {} to {} image...".format(im.mode, mode))
+
+    new_im = Image.new(mode, (width, height), color=color)
+    new_image_path = "{}.fit_{}_{}.{}".format(path[:-4], width, height, save_as)
 
     im_ratio = im.width / im.height
     new_im_ratio = new_im.width / new_im.height
@@ -67,6 +78,8 @@ def parse(user_args):
     parser.add_argument('height', type=int)
     parser.add_argument('-c', '--color', type=hex_code, default="#fff")
     parser.add_argument('-a', '--alpha', type=eight_bit, default=255)
+    parser.add_argument('--save_as', type=str, choices=supported_formats,
+                        default=None)
     args = parser.parse_args(user_args)
 
     return vars(args)
