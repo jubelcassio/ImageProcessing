@@ -2,8 +2,8 @@ import argparse
 import os
 from PIL import Image, ImageColor
 from actions import supported_formats
-from actions import supported_modes
 import re
+import util
 
 def hex_code(string):
     # Validator for hexadecimal colors.
@@ -23,19 +23,6 @@ def eight_bit(n):
         msg = "alpha value {} must be between 0 and 255".format(n)
         raise argparse.ArgumentTypeError(msg)
     return n
-
-def open_image(path):
-    extension = os.path.splitext(path)[1][1:]
-    if extension not in supported_formats:
-        print("{} does not have a supported file type.".format(path))
-        return
-
-    try:
-        im = Image.open(path)
-    except OSError:
-        print("{} cannot be identified as an image file.".format(path))
-        return
-    return im
 
 def fit(im, width, height, color, alpha):
     if width < 1: width = 1
@@ -75,32 +62,11 @@ def fit(im, width, height, color, alpha):
 
     return new_im
 
-def save_image(im, path, save_as):
-    name, extension = os.path.splitext(os.path.basename(path))
-    # Removing the 'dot' at the start
-    extension = extension[1:]
-
-    if save_as == None:
-        save_as = extension
-
-        # Change the image mode, if needed
-        if im.mode not in supported_modes[save_as]:
-            new_mode = supported_modes[save_as][-1]
-            im = im.convert(new_mode)
-            print("Converting {} to {} image...".format(im.mode, new_mode))
-
-    # New name, so the original image isn't overwritten
-    new_image_path = "{}.fit.{}".format(name, save_as)
-
-    im.save(new_image_path)
-    print("{} saved successfully.".format(new_image_path))
-
-
 def run(path, width, height, color, alpha, save_as):
-    im = open_image(path)
+    im = util.open_image(path)
     if im is not None:
         fit_image = fit(im, width, height, color, alpha)
-        save_image(fit_image, path, save_as)
+        util.save_image(fit_image, path, save_as, "fit")
 
 
 def parse(user_args):
