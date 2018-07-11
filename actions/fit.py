@@ -24,32 +24,28 @@ def eight_bit(n):
         raise argparse.ArgumentTypeError(msg)
     return n
 
-
-def run(path, width, height, color, alpha, save_as):
+def open_image(path):
     extension = os.path.splitext(path)[1][1:]
     if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
         return
 
-    im = Image.open(path)
+    try:
+        im = Image.open(path)
+    except OSError:
+        print("{} cannot be identified as an image file.".format(path))
+        return
+    return im
+
+def fit(im, width, height, color, alpha):
+    if width < 1: width = 1
+    if height < 1: height = 1
+
 
     # background color
     color = (*ImageColor.getrgb(color), alpha)
 
-    if save_as == None:
-        save_as = extension
-
-    # Change the image mode, if needed.
-    if im.mode in supported_modes[save_as]:
-        mode = im.mode
-    else:
-        mode = supported_modes[save_as][-1]
-        print("Converting {} to {} image...".format(im.mode, mode))
-
-    new_im = Image.new(mode, (width, height), color=color)
-
-    # New name, so the original image isn't overwritten
-    new_image_path = "{}.fit_{}_{}.{}".format(path[:-4], width, height, save_as)
+    new_im = Image.new(im.mode, (width, height), color=color)
 
     im_ratio = im.width / im.height
     new_im_ratio = new_im.width / new_im.height
@@ -59,25 +55,52 @@ def run(path, width, height, color, alpha, save_as):
         resized_im = im.resize((new_im.width, new_im.height))
         topleft = (0, 0)
 
-    # im has to fit on new_im's height
-    if im_ratio < new_im_ratio:
-        # Minimum width is 1 pixel.
-        width = max([1, round((new_im.height / im.height) * im.width)])
-        height = new_im.height
-        resized_im = im.resize((width, height))
-        topleft = ((new_im.width - width) // 2, 0)
+        # im has to fit on new_im's height
+        if im_ratio < new_im_ratio:
+            # Minimum width is 1 pixel.
+            width = max([1, round((new_im.height / im.height) * im.width)])
+            height = new_im.height
+            resized_im = im.resize((width, height))
+            topleft = ((new_im.width - width) // 2, 0)
 
-    # im has to fit on new_im's width
-    if im_ratio > new_im_ratio:
-        width = new_im.width
-        # Minimum height is 1 pixel.
-        height = max([1, round((new_im.width / im.width) * im.height)])
-        topleft = (0, (new_im.height - height) // 2)
-        resized_im = im.resize((width, height))
+            # im has to fit on new_im's width
+            if im_ratio > new_im_ratio:
+                width = new_im.width
+                # Minimum height is 1 pixel.
+                height = max([1, round((new_im.width / im.width) * im.height)])
+                topleft = (0, (new_im.height - height) // 2)
+                resized_im = im.resize((width, height))
 
-    new_im.paste(resized_im, box=topleft)
-    new_im.save(new_image_path)
+                new_im.paste(resized_im, box=topleft)
+
+    return new_im
+
+def save_image(im, path, save_as):
+    name, extension = os.path.splitext(os.path.basename(path))
+    # Removing the 'dot' at the start
+    extension = extension[1:]
+
+    if save_as == None:
+        save_as = extension
+
+        # Change the image mode, if needed
+        if im.mode not in supported_modes[save_as]:
+            new_mode = supported_modes[save_as][-1]
+            im = im.convert(new_mode)
+            print("Converting {} to {} image...".format(im.mode, new_mode))
+
+    # New name, so the original image isn't overwritten
+    new_image_path = "{}.fit.{}".format(name, save_as)
+
+    im.save(new_image_path)
     print("{} saved successfully.".format(new_image_path))
+
+
+def run(path, width, height, color, alpha, save_as):
+    im = open_image(path)
+    if im is not None:
+        fit_image = fit(im, width, height, color, alpha)
+        save_image(fit_image, path, save_as)
 
 
 def parse(user_args):
