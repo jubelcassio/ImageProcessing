@@ -1,17 +1,17 @@
 import argparse
 import os
-from PIL import Image
-from actions import supported_formats
-from actions import supported_modes
+import util
+
+def info(im):
+    infotext ="{}\nformat: {}\nmode: {}\nsize: {}"
+    print(infotext.format(im.filename, im.format, im.mode, im.size))
+
 
 def run(path):
-    extension = os.path.splitext(filename)[1]
-    if extension not in supported_formats:
-        print("{} does not have a supported file type.".format(path))
-    else:
-        im = Image.open(path)
-        infotext ="{}\nformat: {}\nmode: {}\nsize: {}"
-        print(infotext.format(im.filename, im.format, im.mode, im.size))
+    im = util.open_image(path)
+    if im is not None:
+        info(im)
+
 
 def parse(user_args):
     ## Parse the inputs
