@@ -17,13 +17,6 @@ def open_image(path):
         return
     return im
 
-def scale(im, scalar):
-    # Minimum width/height is 1 pixel.
-    size = (max([1, round(im.size[0] * scalar)]),
-            max([1, round(im.size[1] * scalar)]))
-
-    return im.resize(size)
-
 def save_image(im, path, save_as):
     name, extension = os.path.splitext(os.path.basename(path))
     # Removing the 'dot' at the start
@@ -45,11 +38,18 @@ def save_image(im, path, save_as):
     print("{} saved successfully.".format(new_image_path))
 
 
+def scale(im, scalar):
+    # Minimum width/height is 1 pixel.
+    size = (max([1, round(im.size[0] * scalar)]),
+    max([1, round(im.size[1] * scalar)]))
+
+    return im.resize(size)
+
 def run(path, scalar, save_as):
     im = open_image(path)
     if im is not None:
-        resized_im = scale(im, scalar)
-        save_image(resized_im, path, save_as)
+        scaled_im = scale(im, scalar)
+        save_image(scaled_im, path, save_as)
 
 
 def parse(user_args):
