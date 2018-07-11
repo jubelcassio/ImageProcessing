@@ -14,6 +14,7 @@ def open_image(path):
         im = Image.open(path)
     except OSError:
         print("{} cannot be identified as an image file.".format(path))
+        return
     return im
 
 def scale(im, scalar):
