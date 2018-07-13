@@ -1,6 +1,7 @@
 import argparse
 import os
 from actions import supported_formats
+from actions import all_modes
 import util
 
 
@@ -13,11 +14,11 @@ def resize(im, width, height):
         return im.resize((width, height))
 
 
-def run(path, width, height, save_as):
+def run(path, width, height, save_as, mode):
     im = util.open_image(path)
     if im is not None:
         resized_image = resize(im, width, height)
-        util.save_image(resized_image, path, save_as, "resized")
+        util.save_image(resized_image, path, save_as, mode, "resized")
 
 def parse(user_args):
     ## Parse the inputs
@@ -27,5 +28,6 @@ def parse(user_args):
     parser.add_argument('height', type=int)
     parser.add_argument('--save_as', type=str, choices=supported_formats,
                         default=None)
+    parser.add_argument('--mode', type=str, choices=all_modes, default=None)
 
     return vars(parser.parse_args(user_args))
