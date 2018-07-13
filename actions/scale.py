@@ -2,21 +2,24 @@ import argparse
 import os
 from actions import supported_formats
 from actions import all_modes
+from actions import resampling_filters
 import util
 
 
-def scale(im, scalar):
+def scale(im, scalar, resample):
     # Minimum width/height is 1 pixel.
     size = (max([1, round(im.size[0] * scalar)]),
     max([1, round(im.size[1] * scalar)]))
 
-    return im.resize(size)
+    resample_filter = resampling_filters.index(resample)
+
+    return im.resize(size, resample=resample_filter)
 
 
-def run(path, scalar, save_as, mode):
+def run(path, scalar, save_as, mode, resample):
     im = util.open_image(path)
     if im is not None:
-        scaled_im = scale(im, scalar)
+        scaled_im = scale(im, scalar, resample)
         util.save_image(scaled_im, path, save_as, mode, "scaled")
 
 
@@ -28,5 +31,7 @@ def parse(user_args):
     parser.add_argument('--save_as', type=str, choices=supported_formats,
                         default=None)
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    parser.add_argument('--resample', type=str, choices=resampling_filters,
+                        default=None)
 
     return vars(parser.parse_args(user_args))

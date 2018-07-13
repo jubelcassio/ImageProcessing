@@ -3,6 +3,7 @@ import os
 from PIL import Image, ImageColor
 from actions import supported_formats
 from actions import all_modes
+from actions import resampling_filters
 import re
 import util
 
@@ -25,7 +26,7 @@ def eight_bit(n):
         raise argparse.ArgumentTypeError(msg)
     return n
 
-def fit(im, width, height, color, alpha):
+def fit(im, width, height, color, alpha, resample):
     if width < 1: width = 1
     if height < 1: height = 1
 
@@ -38,9 +39,11 @@ def fit(im, width, height, color, alpha):
     im_ratio = im.width / im.height
     new_im_ratio = new_im.width / new_im.height
 
+    resample_filter = resampling_filters.index(resample)
+
     # Both images have the same aspect ratio
     if im_ratio == new_im_ratio:
-        resized_im = im.resize((new_im.width, new_im.height))
+        resized_im = im.resize((new_im.width, new_im.height), resample_filter)
         topleft = (0, 0)
 
     # im has to fit on new_im's height
@@ -48,7 +51,7 @@ def fit(im, width, height, color, alpha):
         # Minimum width is 1 pixel.
         width = max([1, round((new_im.height / im.height) * im.width)])
         height = new_im.height
-        resized_im = im.resize((width, height))
+        resized_im = im.resize((width, height), resample_filter)
         topleft = ((new_im.width - width) // 2, 0)
 
     # im has to fit on new_im's width
@@ -57,16 +60,16 @@ def fit(im, width, height, color, alpha):
         # Minimum height is 1 pixel.
         height = max([1, round((new_im.width / im.width) * im.height)])
         topleft = (0, (new_im.height - height) // 2)
-        resized_im = im.resize((width, height))
+        resized_im = im.resize((width, height), resample_filter)
 
     new_im.paste(resized_im, box=topleft)
 
     return new_im
 
-def run(path, width, height, color, alpha, save_as, mode):
+def run(path, width, height, color, alpha, save_as, mode, resample):
     im = util.open_image(path)
     if im is not None:
-        fit_image = fit(im, width, height, color, alpha)
+        fit_image = fit(im, width, height, color, alpha, resample)
         util.save_image(fit_image, path, save_as, mode, "fit")
 
 
@@ -81,6 +84,8 @@ def parse(user_args):
     parser.add_argument('--save_as', type=str, choices=supported_formats,
                         default=None)
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    parser.add_argument('--resample', type=str, choices=resampling_filters,
+                        default=None)
     args = parser.parse_args(user_args)
 
     return vars(args)
