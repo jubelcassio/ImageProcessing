@@ -6,7 +6,6 @@ import util
 
 
 def run(path, filetype, mode):
-    # TODO Fix mode conversion
     im = util.open_image(path)
     if im is not None:
         util.save_image(im, path, filetype, mode, "converted")
