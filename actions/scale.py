@@ -11,7 +11,11 @@ def scale(im, scalar, resample):
     size = (max([1, round(im.size[0] * scalar)]),
     max([1, round(im.size[1] * scalar)]))
 
-    resample_filter = resampling_filters.index(resample)
+    # In case the user hasn't given a resample filter, use NEAREST
+    if resample is None:
+        resample_filter = 0
+    else:
+        resample_filter = resampling_filters.index(resample)
 
     return im.resize(size, resample=resample_filter)
 
