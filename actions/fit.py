@@ -8,9 +8,13 @@ import re
 import util
 
 def hex_code(string):
+    # The user can use #fff or just fff as the hexadecimal code.
+    if not string.startswith("#"):
+        string = "#" + string
+
     # Validator for hexadecimal colors.
     if re.match("^#(?:[0-9a-fA-F]{3}){1,2}$", string) is None:
-        msg = "{} is not a valid hex code.".format(string)
+        msg = "#{} is not a valid hex code.".format(string)
         raise argparse.ArgumentTypeError(msg)
     return string
 
@@ -30,7 +34,6 @@ def fit(im, width, height, color, alpha, resample):
     if width < 1: width = 1
     if height < 1: height = 1
 
-
     # background color
     color = (*ImageColor.getrgb(color), alpha)
 
@@ -39,7 +42,10 @@ def fit(im, width, height, color, alpha, resample):
     im_ratio = im.width / im.height
     new_im_ratio = new_im.width / new_im.height
 
-    resample_filter = resampling_filters.index(resample)
+    if resample is None:
+        resample_filter = 0
+    else:
+        resample_filter = resampling_filters.index(resample)
 
     # Both images have the same aspect ratio
     if im_ratio == new_im_ratio:
