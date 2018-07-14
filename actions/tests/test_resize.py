@@ -23,3 +23,7 @@ def test_resize():
     resized_im = resize.resize(im, 500, 200, "BICUBIC")
 
     assert resized_im.size == (500, 200)
+
+    # Asserts the resulting image is at least 1x1 px
+    resized_im = resize.resize(im, 0, 0, None)
+    assert resized_im.size == (1, 1)
