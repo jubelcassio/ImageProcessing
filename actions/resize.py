@@ -10,12 +10,13 @@ def resize(im, width, height, resample):
     if width < 1: width = 1
     if height < 1: height = 1
 
-    resample_filter = resampling_filters.index(resample)
-
-    if im.size == (width, height):
-        print("{} is already of size {}".format(path, (width, height)))
+    # In case the user hasn't given a resample filter, use NEAREST
+    if resample is None:
+        resample_filter = 0
     else:
-        return im.resize((width, height), resample_filter)
+        resample_filter = resampling_filters.index(resample)
+
+    return im.resize((width, height), resample_filter)
 
 
 def run(path, width, height, save_as, mode, resample):
