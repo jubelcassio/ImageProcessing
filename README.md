@@ -33,6 +33,5 @@ If the mode of the original image is not supported by the given format it will b
 * **fit**: Resize an image to a given width / height while maintaining its aspect ratio. The offset area is transparent or filled with a white background, depending on the mode of the original image.  
 ` python process_img.py fit [file/directory] [width] [height] [--color] [--alpha] `  
 \[width] and \[height] must be integers.  
-\[color] must be a hexadecimal color value, used to fill the background.  
-\[alpha] a integer value between 0 to 255, makes the background transparent for image modes that support transparency.  
+\[color] May be a hexadecimal color value ("#aabbcc" or "#aabbccff") or the rgb code for the chosen color, with each number separated by a comma and without spaces ("50,50,50" or "50,50,50,255")
 --save_as=\[format] Optional argument for the format to use while saving the image. Must be one of the supported formats.
