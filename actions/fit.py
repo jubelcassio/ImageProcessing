@@ -7,39 +7,38 @@ from actions import resampling_filters
 import re
 import util
 
-def hex_code(string):
-    # The user can use #fff or just fff as the hexadecimal code.
-    if not string.startswith("#"):
-        string = "#" + string
 
-    # Validator for hexadecimal colors.
-    if re.match("^#(?:[0-9a-fA-F]{3}){1,2}$", string) is None:
-        msg = "#{} is not a valid hex code.".format(string)
-        raise argparse.ArgumentTypeError(msg)
-    return string
-
-def eight_bit(n):
-    # Asserts n is an integer between 0 and 255
+def is_rgb(color):
     try:
-        n = int(n)
-    except:
-        msg = "alpha value {} must be a integer between 0 and 255".format(n)
-        raise argparse.ArgumentTypeError(msg)
-    if not (0 <= n & n < 256):
-        msg = "alpha value {} must be between 0 and 255".format(n)
-        raise argparse.ArgumentTypeError(msg)
-    return n
+        [int(c) for c in color]
+        return True
+    except ValueError:
+        return False
 
 
-def fit(im, width, height, color, alpha, resample):
+def rgb_color(color):
+
+    if color.startswith("#"):
+        if re.match("^#(([0-9a-fA-F]{2}){3,4}|([0-9a-fA-F]){3})$", color):
+            return ImageColor.getrgb(color)
+        else:
+            msg = "{} is not a valid hex color code.".format(color)
+            raise argparse.ArgumentTypeError(msg)
+
+    color = color.split(',')
+    if 3 <= len(color) <= 4 and is_rgb(color):
+        return tuple(int(c) for c in color)
+    else:
+        msg = "{} is not a valid rgb color.".format(color)
+        raise argparse.ArgumentTypeError(msg)
+
+
+def fit(im, width, height, color, resample):
     # TODO: Refactor code to accept a hex color with the alpha code
     # IDEA: Allow RGB values
 
     if width < 1: width = 1
     if height < 1: height = 1
-
-    # background color
-    color = (*ImageColor.getrgb(color), alpha)
 
     new_im = Image.new(im.mode, (width, height), color=color)
 
@@ -76,10 +75,11 @@ def fit(im, width, height, color, alpha, resample):
 
     return new_im
 
-def run(path, width, height, color, alpha, save_as, mode, resample):
+
+def run(path, width, height, color, save_as, mode, resample):
     im = util.open_image(path)
     if im is not None:
-        fit_image = fit(im, width, height, color, alpha, resample)
+        fit_image = fit(im, width, height, color, resample)
         util.save_image(fit_image, path, save_as, mode, "fit")
 
 
@@ -89,8 +89,7 @@ def parse(user_args):
 
     parser.add_argument('width', type=int)
     parser.add_argument('height', type=int)
-    parser.add_argument('-c', '--color', type=hex_code, default="#fff")
-    parser.add_argument('-a', '--alpha', type=eight_bit, default=255)
+    parser.add_argument('-c', '--color', type=rgb_color, default="#fff")
     parser.add_argument('--save_as', type=str, choices=supported_formats,
                         default=None)
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
