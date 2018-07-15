@@ -30,7 +30,11 @@ def eight_bit(n):
         raise argparse.ArgumentTypeError(msg)
     return n
 
+
 def fit(im, width, height, color, alpha, resample):
+    # TODO: Refactor code to accept a hex color with the alpha code
+    # IDEA: Allow RGB values
+
     if width < 1: width = 1
     if height < 1: height = 1
 
