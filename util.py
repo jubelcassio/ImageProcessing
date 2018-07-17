@@ -5,6 +5,7 @@ from PIL import Image
 
 
 def open_image(path):
+    path = os.path.realpath(path)
     extension = os.path.splitext(path)[1][1:]
     if extension not in supported_formats:
         print("{} does not have a supported file type.".format(path))
@@ -18,7 +19,11 @@ def open_image(path):
     return im
 
 
-def save_image(im, path, save_as, mode, string="processed"):
+def save_image(im, path, save_folder, save_as, mode, string="processed"):
+    if save_folder:
+        folder = os.path.abspath(os.path.dirname(save_folder))
+    else:
+        folder = os.path.abspath(os.path.dirname(path))
     name, extension = os.path.splitext(os.path.basename(path))
     # Removing the 'dot' at the start
     extension = extension[1:]
@@ -45,7 +50,8 @@ def save_image(im, path, save_as, mode, string="processed"):
         im = im.convert(mode)
 
     # New name, so the original image isn't overwritten
-    new_image_path = "{}.{}.{}".format(name, string, save_as)
+    new_image_name = "{}.{}.{}".format(name, string, save_as)
+    new_image_path = os.path.join(folder, new_image_name)
 
     im.save(new_image_path)
     print("{} saved successfully.".format(new_image_path))
