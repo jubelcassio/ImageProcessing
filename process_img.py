@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 '''
 Wrapper for the scripts that interacts with the user.
 '''
@@ -40,19 +42,22 @@ def call_action(action, path, user_args):
 
 
 if __name__ == '__main__':
-    action = sys.argv[1]
-
-    if action == "convert":
-        call_action(convert, sys.argv[2], sys.argv[3:])
-    elif action == "resize":
-        call_action(resize, sys.argv[2], sys.argv[3:])
-    elif action == "scale":
-        call_action(scale, sys.argv[2], sys.argv[3:])
-    elif action == "fit":
-        call_action(fit, sys.argv[2], sys.argv[3:])
-    elif action == "info":
-        call_action(info, sys.argv[2], sys.argv[3:])
+    if len(sys.argv) < 2:
+        print("Usage:\nprocess_img [action] [file/directory] [arguments]")
     else:
-        msg = "Invalid action: '{}', choose from: {}".format(action,
-                                                             action_list)
-        print(msg)
+        action = sys.argv[1]
+
+        if action == "convert":
+            call_action(convert, sys.argv[2], sys.argv[3:])
+        elif action == "resize":
+            call_action(resize, sys.argv[2], sys.argv[3:])
+        elif action == "scale":
+            call_action(scale, sys.argv[2], sys.argv[3:])
+        elif action == "fit":
+            call_action(fit, sys.argv[2], sys.argv[3:])
+        elif action == "info":
+            call_action(info, sys.argv[2], sys.argv[3:])
+        else:
+            msg = "Invalid action: '{}', choose from: {}".format(action,
+                                                                 action_list)
+            print(msg)

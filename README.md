@@ -3,9 +3,19 @@
 
 General use scripts for image processing using the Pillow library
 
+#### Install:
+**Linux:**  
+Save the program files into a directory of your choice (I like to save them in /home/username/scripts)  
+Add the chosen directory into your PATH variable  
+Open a terminal and execute `chmod a+x process_img.py`  
+Now you can call the process_img
+
 #### Usage:
 
-` python process_img.py [action] [file/directory] [arguments] `  
+After Installation:
+` process_img [action] [file/directory] [arguments] `  
+Or by summoning python manually:
+`python process_img.py [action] [file/directory] [arguments] `  
 \[file/directory] must be a single image or a directory containing image files to be processed.
 
 #### Supported Formats:
