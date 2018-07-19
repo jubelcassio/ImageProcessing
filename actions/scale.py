@@ -32,7 +32,7 @@ def parse(user_args):
     parser = argparse.ArgumentParser(prog="scale")
 
     parser.add_argument('scalar', type=float)
-    parser.add_argument('--save_folder', type=str, default=".")
+    parser.add_argument('--save_folder', type=str, default=None)
     parser.add_argument('--save_as', type=str, choices=supported_formats,
                         default=None)
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)

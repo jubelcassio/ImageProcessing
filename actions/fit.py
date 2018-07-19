@@ -87,7 +87,7 @@ def parse(user_args):
     parser.add_argument('width', type=int)
     parser.add_argument('height', type=int)
     parser.add_argument('-c', '--color', type=rgb_color, default="#fff")
-    parser.add_argument('--save_folder', type=str, default=".")
+    parser.add_argument('--save_folder', type=str, default=None)
     parser.add_argument('--save_as', type=str, choices=supported_formats,
                         default=None)
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)

@@ -3,12 +3,15 @@ from actions import scale
 
 def test_parse():
     args = ["2"]
-    result = {"scalar": 2, "save_as": None, "mode": None, "resample": None}
+    result = {"scalar": 2, "save_as": None, "save_folder": None,
+              "mode": None, "resample": None}
 
     assert scale.parse(args) == result
 
-    args = ["2", "--save_as=png", "--mode=RGB", "--resample=BOX"]
-    result = {"scalar": 2, "save_as": "png", "mode": "RGB", "resample": "BOX"}
+    args = ["2", "--save_as=png", "--save_folder=home/output", "--mode=RGB",
+            "--resample=BOX"]
+    result = {"scalar": 2, "save_as": "png", "save_folder": "home/output",
+              "mode": "RGB", "resample": "BOX"}
 
     assert scale.parse(args) == result
 

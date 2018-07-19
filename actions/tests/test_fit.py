@@ -7,32 +7,37 @@ def test_parse():
     # No arguments
     args = ["200", "100"]
     result = {"width": 200, "height": 100, "color": (255,255,255),
-              "save_as": None, "mode": None, "resample": None}
+              "save_folder": None, "save_as": None, "mode": None,
+              "resample": None}
     assert fit.parse(args) == result
 
     # All arguments
-    args = ["200", "100", "--color=#234aaa", "--save_as=png", "--mode=RGB",
-            "--resample=BOX"]
+    args = ["200", "100", "--color=#234aaa", "--save_as=png",
+            "--save_folder=home/output", "--mode=RGB", "--resample=BOX"]
     result = {"width": 200, "height": 100, "color": (35,74,170),
-              "save_as": "png", "mode": "RGB", "resample": "BOX"}
+              "save_folder": "home/output", "save_as": "png", "mode": "RGB",
+              "resample": "BOX"}
     assert fit.parse(args) == result
 
     # Color hex code with alpha
     args = ["200", "100", "--color=#234aaa11"]
     result = {"width": 200, "height": 100, "color": (35,74,170,17),
-              "save_as": None, "mode": None, "resample": None}
+              "save_folder": None, "save_as": None, "mode": None,
+              "resample": None}
     assert fit.parse(args) == result
 
     # Color rgb
     args = ["200", "100", "--color=35,74,170"]
     result = {"width": 200, "height": 100, "color": (35,74,170),
-              "save_as": None, "mode": None, "resample": None}
+              "save_folder": None, "save_as": None, "mode": None,
+              "resample": None}
     assert fit.parse(args) == result
 
     # Color rgba
     args = ["200", "100", "--color=35,74,170,17"]
     result = {"width": 200, "height": 100, "color": (35,74,170,17),
-              "save_as": None, "mode": None, "resample": None}
+              "save_folder": None, "save_as": None, "mode": None,
+              "resample": None}
     assert fit.parse(args) == result
 
 
