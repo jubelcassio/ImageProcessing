@@ -57,6 +57,8 @@ if __name__ == '__main__':
             call_action(fit, sys.argv[2], sys.argv[3:])
         elif action == "info":
             call_action(info, sys.argv[2], sys.argv[3:])
+        elif action == "optimize":
+            call_action(optimize, sys.argv[2], sys.argv[3:])
         else:
             msg = "Invalid action: '{}', choose from: {}".format(action,
                                                                  action_list)

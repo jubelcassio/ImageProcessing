@@ -19,7 +19,8 @@ def open_image(path):
     return im
 
 
-def save_image(im, path, save_folder, save_as, mode, string="processed"):
+def save_image(im, path, save_folder, save_as, mode, string="processed",
+               save_params={}):
     if save_folder:
         folder = os.path.abspath(os.path.dirname(save_folder))
     else:
@@ -53,5 +54,5 @@ def save_image(im, path, save_folder, save_as, mode, string="processed"):
     new_image_name = "{}.{}.{}".format(name, string, save_as)
     new_image_path = os.path.join(folder, new_image_name)
 
-    im.save(new_image_path)
+    im.save(new_image_path, **save_params)
     print("{} saved successfully.".format(new_image_path))
