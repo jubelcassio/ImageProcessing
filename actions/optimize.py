@@ -7,28 +7,11 @@ from PIL import Image
 import util
 
 
-def optimize(im, save_as):
-    if save_as == "jpg" or (im.filename.lower().endswith("jpg") and save_as is None):
-        params = {"quality": 85, "optimize":True}
-
-    elif save_as == "png" or (im.filename.lower().endswith("png") and save_as is None):
-        im = im.convert("P", palette=Image.ADAPTIVE)
-        params = {"optimize":True}
-
-    else:
-        msg = "Can only optimize when saving as jpg or png."
-        raise ArgumentTypeError(msg)
-        return
-
-    return (im, params)
-
-
 def run(path, save_as, save_folder, mode):
     im = util.open_image(path)
     if im is not None:
-        im, params = optimize(im, save_as)
         util.save_image(im, path, save_folder, save_as, mode, "optimized",
-                        params)
+                        optimize=True)
 
 def parse(user_args):
     ## Parse the inputs

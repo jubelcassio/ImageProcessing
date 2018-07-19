@@ -20,7 +20,7 @@ def open_image(path):
 
 
 def save_image(im, path, save_folder, save_as, mode, string="processed",
-               save_params={}):
+               optimize=False):
     if save_folder:
         folder = os.path.abspath(os.path.dirname(save_folder))
     else:
@@ -47,12 +47,25 @@ def save_image(im, path, save_folder, save_as, mode, string="processed",
         mode = supported_modes[save_as][-1]
         print("Saving image as {} mode...".format(mode))
 
-    if mode != im.mode:
+    if optimize:
+        if save_as.lower() == "jpg":
+            im = im.convert(mode)
+            params = {"quality": 85, "optimize":True}
+
+        elif save_as.lower() == "png":
+            im = im.convert("P", palette=Image.ADAPTIVE)
+            params = {"optimize":True}
+        else:
+            msg = "Error! Can only optimize when saving as jpg or png."
+            print(msg)
+            return
+    else:
+        params = {}
         im = im.convert(mode)
 
     # New name, so the original image isn't overwritten
     new_image_name = "{}.{}.{}".format(name, string, save_as)
     new_image_path = os.path.join(folder, new_image_name)
 
-    im.save(new_image_path, **save_params)
+    im.save(new_image_path, **params)
     print("{} saved successfully.".format(new_image_path))
