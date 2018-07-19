@@ -73,11 +73,13 @@ def fit(im, width, height, color, resample):
     return new_im
 
 
-def run(path, width, height, color, save_folder, save_as, mode, resample):
+def run(path, width, height, color, save_folder, save_as, mode, resample,
+        optimize):
     im = util.open_image(path)
     if im is not None:
         fit_image = fit(im, width, height, color, resample)
-        util.save_image(fit_image, path, save_folder, save_as, mode, "fit")
+        util.save_image(fit_image, path, save_folder, save_as, mode, "fit",
+                        optimize)
 
 
 def parse(user_args):
@@ -93,6 +95,8 @@ def parse(user_args):
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
     parser.add_argument('--resample', type=str, choices=resampling_filters,
                         default=None)
+    parser.add_argument('-optimize', action="store_true")
+
     args = parser.parse_args(user_args)
 
     return vars(args)

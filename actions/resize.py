@@ -19,11 +19,12 @@ def resize(im, width, height, resample):
     return im.resize((width, height), resample_filter)
 
 
-def run(path, width, height, save_folder, save_as, mode, resample):
+def run(path, width, height, save_folder, save_as, mode, resample, optimize):
     im = util.open_image(path)
     if im is not None:
         resized_image = resize(im, width, height, resample)
-        util.save_image(resized_image, path, save_folder, save_as, mode, "resized")
+        util.save_image(resized_image, path, save_folder, save_as, mode,
+                        "resized", optimize)
 
 def parse(user_args):
     ## Parse the inputs
@@ -37,5 +38,6 @@ def parse(user_args):
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
     parser.add_argument('--resample', type=str, choices=resampling_filters,
                         default=None)
+    parser.add_argument('-optimize', action="store_true")
 
     return vars(parser.parse_args(user_args))

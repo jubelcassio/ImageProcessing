@@ -4,14 +4,14 @@ from actions import scale
 def test_parse():
     args = ["2"]
     result = {"scalar": 2, "save_as": None, "save_folder": None,
-              "mode": None, "resample": None}
+              "mode": None, "resample": None, "optimize": False}
 
     assert scale.parse(args) == result
 
     args = ["2", "--save_as=png", "--save_folder=home/output", "--mode=RGB",
-            "--resample=BOX"]
+            "--resample=BOX", "-optimize"]
     result = {"scalar": 2, "save_as": "png", "save_folder": "home/output",
-              "mode": "RGB", "resample": "BOX"}
+              "mode": "RGB", "resample": "BOX", "optimize": True}
 
     assert scale.parse(args) == result
 

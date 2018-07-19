@@ -20,11 +20,12 @@ def scale(im, scalar, resample):
     return im.resize(size, resample=resample_filter)
 
 
-def run(path, scalar, save_folder, save_as, mode, resample):
+def run(path, scalar, save_folder, save_as, mode, resample, optimize):
     im = util.open_image(path)
     if im is not None:
         scaled_im = scale(im, scalar, resample)
-        util.save_image(scaled_im, path, save_folder, save_as, mode, "scaled")
+        util.save_image(scaled_im, path, save_folder, save_as, mode, "scaled",
+                        optimize)
 
 
 def parse(user_args):
@@ -38,5 +39,6 @@ def parse(user_args):
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
     parser.add_argument('--resample', type=str, choices=resampling_filters,
                         default=None)
+    parser.add_argument('-optimize', action="store_true")
 
     return vars(parser.parse_args(user_args))
