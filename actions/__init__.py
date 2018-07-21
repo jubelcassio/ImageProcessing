@@ -12,6 +12,6 @@ supported_modes = {
 all_modes = ["1", "L", "LAB", "P", "CMYK", "RGB", "RGBA"]
 resampling_filters = ["NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"]
 
-__all__ = ['convert', 'resize', 'fit', 'scale', 'info', 'optimize']
+__all__ = ['convert', 'resize', 'fit', 'scale', 'info', 'optimize', 'invert']
 
 from . import *

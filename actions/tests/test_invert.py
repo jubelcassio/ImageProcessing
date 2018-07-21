@@ -25,3 +25,14 @@ def test_invert():
     inverted_im = invert.invert(bg)
     assert inverted_im.crop((0,0,50,50)).getcolors() == [(2500, white)]
     assert inverted_im.getcolors() == [(2500, white), (7500, black)]
+
+    black = (0,0,0,255)
+    white = (255,255,255,255)
+    transparent = (255,255,255,0)
+    bg = Image.new("RGBA", (100, 100))
+    im = Image.new("RGBA", (50, 50), black)
+    bg.paste(im)
+
+    inverted_im = invert.invert(bg)
+    assert inverted_im.crop((0,0,50,50)).getcolors() == [(2500, white)]
+    assert inverted_im.getcolors() == [(2500, white), (7500, transparent)]
