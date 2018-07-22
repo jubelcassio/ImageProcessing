@@ -5,10 +5,10 @@ from actions import all_modes
 import util
 
 
-def run(path, filetype, save_folder, mode, optimize):
+def run(path, save_as, save_folder, mode, optimize):
     im = util.open_image(path)
     if im is not None:
-        util.save_image(im, path, save_folder, filetype, mode, "converted",
+        util.save_image(im, path, save_folder, save_as, mode, "converted",
                         optimize)
 
 
@@ -16,7 +16,7 @@ def parse(user_args):
     ## Parse the inputs
     parser = argparse.ArgumentParser(prog="convert")
 
-    parser.add_argument('filetype', type=str, choices=supported_formats)
+    parser.add_argument('save_as', type=str, choices=supported_formats)
     parser.add_argument('--save_folder', type=str, default=None)
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
     parser.add_argument('-optimize', action="store_true")
