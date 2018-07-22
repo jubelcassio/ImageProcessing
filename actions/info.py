@@ -3,9 +3,8 @@ import os
 import util
 
 def info(im):
-    infotext ="{}\nformat: {}\nmode: {}\nsize: {}"
+    infotext ="\n{}\nformat: {}\nmode: {}\nsize: {}"
     print(infotext.format(im.filename, im.format, im.mode, im.size))
-
 
 def run(path):
     im = util.open_image(path)
