@@ -22,7 +22,11 @@ def open_image(path):
 def save_image(im, path, save_folder, save_as, mode, string="processed",
                optimize=False):
     if save_folder:
-        folder = os.path.abspath(os.path.dirname(save_folder))
+        if os.path.isdir(save_folder):
+            folder = os.path.abspath(save_folder)
+        else:
+            print("{} is not a valid directory.".format(save_folder))
+            return
     else:
         folder = os.path.abspath(os.path.dirname(path))
     name, extension = os.path.splitext(os.path.basename(path))
@@ -66,6 +70,5 @@ def save_image(im, path, save_folder, save_as, mode, string="processed",
     # New name, so the original image isn't overwritten
     new_image_name = "{}.{}.{}".format(name, string, save_as)
     new_image_path = os.path.join(folder, new_image_name)
-
     im.save(new_image_path, **params)
     print("{} saved successfully.".format(new_image_path))
