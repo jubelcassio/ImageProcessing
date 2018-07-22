@@ -1,47 +1,135 @@
 
 ## Image Processing
 
-General use scripts for image processing using the Pillow library
+Scripts for image processing using the Pillow library  
+
+#### Requirements:  
+Python 3.6.3  
+Pillow == 5.2.0  
+
+For the tests:  
+atomicwrites==1.1.5  
+attrs==18.1.0  
+more-itertools==4.2.0  
+pluggy==0.6.0  
+py==1.5.4  
+pytest==3.6.3  
+six==1.11.0  
+
 
 #### Install:
 **Linux:**  
-Save the program files into a directory of your choice (I like to save them in /home/username/scripts)  
+Save the program files into a directory of your choice (for example, /home/username/scripts)  
 Add the chosen directory into your PATH variable  
 Open a terminal and execute `chmod a+x process_img.py`  
-Now you can call the process_img
+Now you can call the process_img file from any other directory on your system.  
+
 
 #### Usage:
 
-After Installation:
+After Installation:  
 ` process_img [action] [file/directory] [arguments] `  
 Or by summoning python manually:
 `python process_img.py [action] [file/directory] [arguments] `  
 \[file/directory] must be a single image or a directory containing image files to be processed.
 
+
 #### Supported Formats:
 The supported file types for both, reading and writing are:  
 bmp, eps, gif, ico, jpg, jpeg, png, tiff
 
-#### Available actions:
+
+#### Available commands:
 * **convert**: Converts image(s) to given format.  
-` python process_img.py convert [file/directory] [format to convert] --mode=[mode]`  
-\[format to convert] must be one of the supported formats, listed above and in lower case  
---mode=\[mode] Optional argument for the color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
-If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the format.
+`process_img convert [file/directory] [save as] [optional arguments]`  
+`[save as]` must be one of the supported formats, listed above and in lower case  
+**optional arguments**  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--save_folder=[folder]` The directory where the images will be saved.  
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
 
 * **resize**: Resizes image(s) to given width and height.  
-` python process_img.py resize [file/directory] [width] [height] --save_as=[format]`  
-\[width] and \[height] must be integers.  
---save_as=\[format] Optional argument for the format to use while saving the image. Must be one of the supported formats.
+`process_img resize [file/directory] [width] [height] [optional arguments]`  
+`[width]` and `[height]` must be integers.  
+**optional arguments**  
+`--save_as=[format]` must be one of the supported formats, listed above and in lower case  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--save_folder=[folder]` The directory where the images will be saved.  
+`--resample=[resampling filter]` The resampling filter to be used when resizing the images. The filters available are:  
+"NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.   
 
 
 * **scale**: Scale image(s) by given scalar.  
-` python process_img.py scale [file/directory] [scalar] `  
-\[scalar] must be a decimal or integer.  
---save_as=\[format] Optional argument for the format to use while saving the image. Must be one of the supported formats.
+`process_img scale [file/directory] [scalar] [optional arguments]`  
+`[scalar]` must be a decimal or integer, the image's width and height will be multiplied by this number.  
+**optional arguments**  
+`--save_as=[format]` must be one of the supported formats, listed above and in lower case  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--save_folder=[folder]` The directory where the images will be saved.  
+`--resample=[resampling filter]` The resampling filter to be used when resizing the images. The filters available are:  
+"NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+
 
 * **fit**: Resize an image to a given width / height while maintaining its aspect ratio. The offset area is transparent or filled with a white background, depending on the mode of the original image.  
-` python process_img.py fit [file/directory] [width] [height] [--color] [--alpha] `  
-\[width] and \[height] must be integers.  
-\[color] May be a hexadecimal color value ("#aabbcc" or "#aabbccff") or the rgb code for the chosen color, with each number separated by a comma and without spaces ("50,50,50" or "50,50,50,255")
---save_as=\[format] Optional argument for the format to use while saving the image. Must be one of the supported formats.
+`process_img fit [file/directory] [width] [height] [optional arguments]`  
+`[width]` and `[height]` must be integers.  
+`[color]` May be a hexadecimal color value ("#aabbcc" or "#aabbccff") or the rgb code for the chosen color, with each number separated by a comma and without spaces ("50,50,50" or "50,50,50,255")
+--save_as=\[format] Optional argument for the format to use while saving the image. Must be one of the supported formats.  
+**optional arguments**  
+`--color=[color]` A color to be used as the background of the resulting image. Must be in hex code format ("#fff", "#ffffff", "#ffffffff") or as a list of rgb/rgba values, separated by a comma ("255,255,255" or "255,255,255,255")  
+`--save_as=[format]` must be one of the supported formats, listed above and in lower case  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--save_folder=[folder]` The directory where the images will be saved.  
+`--resample=[resampling filter]` The resampling filter to be used when resizing the images. The filters available are:  
+"NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+
+
+* **info**: Prints the path, format, color mode and dimensions of the given image.  
+`process_img info [file/directory]`
+
+
+* **dessaturate**: Grayscales the image.  
+`process_img dessaturate [file/directory] [optional arguments]`  
+**optional arguments**  
+`--save_as=[format]` must be one of the supported formats, listed above and in lower case  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--save_folder=[folder]` The directory where the images will be saved.  
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.   
+
+
+* **invert**: Invert the colors of the image.  
+`process_img invert [file/directory] [optional arguments]`  
+**optional arguments**  
+`--save_as=[format]` must be one of the supported formats, listed above and in lower case  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--save_folder=[folder]` The directory where the images will be saved.  
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.
+
+
+* **mirror**: Mirrors the images, by horizontal, vertical or both axis.  
+`process_img mirror [file/directory] [mirror_mode] [optional arguments]`  
+`[mirror mode]` Can be "v" for vertical, "h" for horizontal, or "vh" / "hv" for both.  
+**optional arguments**  
+`--save_as=[format]` must be one of the supported formats, listed above and in lower case  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--save_folder=[folder]` The directory where the images will be saved.  
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.
+
+
+* **optimize**: Minimizes the image size.  
+`process_img optimize [file/directory] [optional arguments]`  
+**optional arguments**  
+`--save_as=[format]` must be one of the supported formats, listed above and in lower case  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--save_folder=[folder]` The directory where the images will be saved.  
