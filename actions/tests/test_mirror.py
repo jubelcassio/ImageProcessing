@@ -4,28 +4,29 @@ from actions import mirror
 def test_parse():
     args = ["v"]
     result = {"mirror_mode": "v", "save_as": None, "save_folder": None,
-              "mode": None, "optimize": False}
+              "mode": None, "optimize": False, "background": (255,255,255)}
     assert mirror.parse(args) == result
 
     args = ["h"]
     result = {"mirror_mode": "h", "save_as": None, "save_folder": None,
-    "mode": None, "optimize": False}
+    "mode": None, "optimize": False, "background": (255,255,255)}
     assert mirror.parse(args) == result
 
     args = ["vh"]
     result = {"mirror_mode": "vh", "save_as": None, "save_folder": None,
-    "mode": None, "optimize": False}
+    "mode": None, "optimize": False, "background": (255,255,255)}
     assert mirror.parse(args) == result
 
     args = ["hv"]
     result = {"mirror_mode": "hv", "save_as": None, "save_folder": None,
-    "mode": None, "optimize": False}
+    "mode": None, "optimize": False, "background": (255,255,255)}
     assert mirror.parse(args) == result
 
     args = ["vh", "--save_as=png", "--save_folder=home/output", "--mode=RGB",
-            "-optimize"]
-    result = {"mirror_mode": "vh", "save_as": "png", "save_folder": "home/output",
-              "mode": "RGB", "optimize": True}
+            "--background=#bbb", "-optimize"]
+    result = {"mirror_mode": "vh", "save_as": "png",
+              "save_folder": "home/output", "mode": "RGB", "optimize": True,
+              "background": (187,187,187)}
     assert mirror.parse(args) == result
 
 def test_invert():

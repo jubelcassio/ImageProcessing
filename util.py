@@ -1,7 +1,32 @@
 import os
 from actions import supported_formats
 from actions import supported_modes
-from PIL import Image
+from PIL import Image, ImageColor
+import re
+
+def is_rgb(color):
+    try:
+        [int(c) for c in color]
+        return True
+    except ValueError:
+        return False
+
+
+def rgb_color_type(color):
+
+    if color.startswith("#"):
+        if re.match("^#(([0-9a-fA-F]{2}){3,4}|([0-9a-fA-F]){3})$", color):
+            return ImageColor.getrgb(color)
+        else:
+            msg = "{} is not a valid hex color code.".format(color)
+            raise argparse.ArgumentTypeError(msg)
+
+    color = color.split(',')
+    if 3 <= len(color) <= 4 and is_rgb(color):
+        return tuple(int(c) for c in color)
+    else:
+        msg = "{} is not a valid rgb color.".format(color)
+        raise argparse.ArgumentTypeError(msg)
 
 
 def open_image(path):
@@ -20,7 +45,7 @@ def open_image(path):
 
 
 def save_image(im, path, save_folder, save_as, mode, string="processed",
-               optimize=False):
+               optimize=False, background=None):
     if save_folder:
         if os.path.isdir(save_folder):
             folder = os.path.abspath(save_folder)
@@ -50,6 +75,14 @@ def save_image(im, path, save_folder, save_as, mode, string="processed",
         print("{} mode is not compatible with {} files".format(mode, save_as))
         mode = supported_modes[save_as][-1]
         print("Saving image as {} mode...".format(mode))
+
+    ## If a image with alpha channel is going to be convert to a mode with no
+    # alpha channel, we replace the alpha channel with a color.
+    if im.mode.endswith("A") and not mode.endswith("A"):
+        alpha = im.getchannel('A')
+        bg = Image.new("RGBA", im.size, background)
+        bg.paste(im, mask=alpha)
+        im = bg
 
     if optimize:
         if save_as.lower() == "jpg":

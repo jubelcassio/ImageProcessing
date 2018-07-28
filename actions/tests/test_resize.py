@@ -4,14 +4,16 @@ from actions import resize
 def test_parse():
     args = ["200", "100"]
     result = {"width": 200, "height": 100, "save_as": None, "optimize": False,
-              "save_folder": None, "mode": None, "resample": None}
+              "save_folder": None, "mode": None, "resample": None,
+              "background": (255,255,255)}
 
     assert resize.parse(args) == result
 
     args = ["200", "100", "--save_as=png", "--save_folder=home/output",
-            "--mode=RGB", "--resample=BOX", "-optimize"]
+            "--mode=RGB", "--background=#bbb", "--resample=BOX", "-optimize"]
     result = {"width": 200, "height": 100, "save_as": "png", "optimize": True,
-              "save_folder": "home/output", "mode": "RGB", "resample": "BOX"}
+              "save_folder": "home/output", "mode": "RGB", "resample": "BOX",
+              "background": (187,187,187)}
 
     assert resize.parse(args) == result
 

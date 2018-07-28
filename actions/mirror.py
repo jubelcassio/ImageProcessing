@@ -15,12 +15,12 @@ def mirror(im, mirror):
 
 
 
-def run(path, mirror_mode, save_folder, save_as, mode, optimize):
+def run(path, mirror_mode, save_folder, save_as, mode, optimize, background):
     im = util.open_image(path)
     if im is not None:
         mirrored_im = mirror(im, mirror_mode)
         util.save_image(mirrored_im, path, save_folder, save_as, mode,
-                        "mirrored", optimize)
+                        "mirrored", optimize, background)
 
 def parse(user_args):
     ## Parse the inputs
@@ -31,6 +31,8 @@ def parse(user_args):
     parser.add_argument('--save_as', type=str, choices=supported_formats,
                         default=None)
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    parser.add_argument('--background', type=util.rgb_color_type,
+                        default="#fff")
     parser.add_argument('-optimize', action="store_true")
 
     return vars(parser.parse_args(user_args))

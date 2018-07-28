@@ -4,14 +4,14 @@ from actions import invert
 def test_parse():
     args = []
     result = {"save_as": None, "save_folder": None, "mode": None,
-              "optimize": False}
+              "optimize": False, "background": (255,255,255)}
 
     assert invert.parse(args) == result
 
     args = ["--save_as=png", "--save_folder=home/output", "--mode=RGB",
-            "-optimize"]
+            "--background=#bbb", "-optimize"]
     result = {"save_as": "png", "save_folder": "home/output", "mode": "RGB",
-              "optimize": True}
+              "optimize": True, "background": (187,187,187)}
 
     assert invert.parse(args) == result
 

@@ -1,36 +1,10 @@
 import argparse
 import os
-from PIL import Image, ImageColor
+from PIL import Image
 from actions import supported_formats
 from actions import all_modes
 from actions import resampling_filters
-import re
 import util
-
-
-def is_rgb(color):
-    try:
-        [int(c) for c in color]
-        return True
-    except ValueError:
-        return False
-
-
-def rgb_color(color):
-
-    if color.startswith("#"):
-        if re.match("^#(([0-9a-fA-F]{2}){3,4}|([0-9a-fA-F]){3})$", color):
-            return ImageColor.getrgb(color)
-        else:
-            msg = "{} is not a valid hex color code.".format(color)
-            raise argparse.ArgumentTypeError(msg)
-
-    color = color.split(',')
-    if 3 <= len(color) <= 4 and is_rgb(color):
-        return tuple(int(c) for c in color)
-    else:
-        msg = "{} is not a valid rgb color.".format(color)
-        raise argparse.ArgumentTypeError(msg)
 
 
 def fit(im, width, height, color, resample):
@@ -74,12 +48,12 @@ def fit(im, width, height, color, resample):
 
 
 def run(path, width, height, color, save_folder, save_as, mode, resample,
-        optimize):
+        optimize, background):
     im = util.open_image(path)
     if im is not None:
         fit_image = fit(im, width, height, color, resample)
         util.save_image(fit_image, path, save_folder, save_as, mode, "fit",
-                        optimize)
+                        optimize, background)
 
 
 def parse(user_args):
@@ -88,11 +62,14 @@ def parse(user_args):
 
     parser.add_argument('width', type=int)
     parser.add_argument('height', type=int)
-    parser.add_argument('-c', '--color', type=rgb_color, default="#fff")
+    parser.add_argument('-c', '--color', type=util.rgb_color_type,
+                        default="#fff")
     parser.add_argument('--save_folder', type=str, default=None)
     parser.add_argument('--save_as', type=str, choices=supported_formats,
                         default=None)
     parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    parser.add_argument('--background', type=util.rgb_color_type,
+                        default="#fff")
     parser.add_argument('--resample', type=str, choices=resampling_filters,
                         default=None)
     parser.add_argument('-optimize', action="store_true")
