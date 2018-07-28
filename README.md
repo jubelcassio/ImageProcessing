@@ -48,6 +48,7 @@ bmp, eps, gif, ico, jpg, jpeg, png, tiff
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--save_folder=[folder]` The directory where the images will be saved.  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 
 * **resize**: Resizes image(s) to given width and height.  
 `process_img resize [file/directory] [width] [height] [optional arguments]`  
@@ -60,6 +61,7 @@ If the mode of the original image is not supported by the given format it will b
 `--resample=[resampling filter]` The resampling filter to be used when resizing the images. The filters available are:  
 "NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.   
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 
 
 * **scale**: Scale image(s) by given scalar.  
@@ -73,6 +75,7 @@ If the mode of the original image is not supported by the given format it will b
 `--resample=[resampling filter]` The resampling filter to be used when resizing the images. The filters available are:  
 "NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 
 
 * **fit**: Resize an image to a given width / height while maintaining its aspect ratio. The offset area is transparent or filled with a white background, depending on the mode of the original image.  
@@ -89,6 +92,7 @@ If the mode of the original image is not supported by the given format it will b
 `--resample=[resampling filter]` The resampling filter to be used when resizing the images. The filters available are:  
 "NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 
 
 * **info**: Prints the path, format, color mode and dimensions of the given image.  
@@ -102,7 +106,8 @@ If the mode of the original image is not supported by the given format it will b
 `--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--save_folder=[folder]` The directory where the images will be saved.  
-`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.   
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 
 
 * **invert**: Invert the colors of the image.  
@@ -112,7 +117,8 @@ If the mode of the original image is not supported by the given format it will b
 `--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--save_folder=[folder]` The directory where the images will be saved.  
-`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 
 
 * **mirror**: Mirrors the images, by horizontal, vertical or both axis.  
@@ -123,7 +129,8 @@ If the mode of the original image is not supported by the given format it will b
 `--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--save_folder=[folder]` The directory where the images will be saved.  
-`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 
 
 * **optimize**: Minimizes the image size.  
@@ -133,3 +140,4 @@ If the mode of the original image is not supported by the given format it will b
 `--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--save_folder=[folder]` The directory where the images will be saved.  
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  

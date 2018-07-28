@@ -7,7 +7,8 @@ Must Have:
 Can be called from the root to affect files anywhere in the system.
 
 Should Have:
-When saving images that have alpha channel as images without alpha channel, allow the user to set the background color as hex code or RGB
+Integration Tests
+Documentation should have example usages of this program.
 
 Could Have:
 Filter input images by name (with regex?).
