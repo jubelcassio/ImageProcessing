@@ -18,11 +18,24 @@ six==1.11.0
 
 
 #### Install:
+Just clone the repository anywhere and call it by the full path while invoking python:
+` python /home/user/scripts/ImageProcessing/process_img.py ... `
+
+Alternatively, you can set the program in your PATH variable, so its accessible from anywhere in the system:  
+TODO: Check if the Linux instructions work.  
+
 **Linux:**  
-Save the program files into a directory of your choice (for example, /home/username/scripts)  
+Clone the repository into a directory of your choice (for example, /home/username/scripts)  
+` git clone https://github.com/jubelcassio/ImageProcessing.git `
 Add the chosen directory into your PATH variable  
-Open a terminal and execute `chmod a+x process_img.py`  
 Now you can call the process_img file from any other directory on your system.  
+`process_img.py ...`
+
+**Windows:**  
+Clone the repository into a directory of your choice (for example, C:\user_scripts\)  
+Add the program's directory (C:\user_scripts\ImageProcessing) into your user PATH variable  
+Now you can call the process_img file from any other directory on your system.  
+`process_img.py ...`
 
 
 #### Usage:
