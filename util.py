@@ -3,13 +3,7 @@ from actions import supported_formats
 from actions import supported_modes
 from PIL import Image, ImageColor
 import re
-
-def is_rgb(color):
-    try:
-        [int(c) for c in color]
-        return True
-    except ValueError:
-        return False
+import argparse
 
 
 def rgb_color_type(color):
@@ -22,7 +16,7 @@ def rgb_color_type(color):
             raise argparse.ArgumentTypeError(msg)
 
     color = color.split(',')
-    if 3 <= len(color) <= 4 and is_rgb(color):
+    if 3 <= len(color) <= 4 and all([c.isdigit() for c in color]):
         return tuple(int(c) for c in color)
     else:
         msg = "{} is not a valid rgb color.".format(color)
@@ -44,8 +38,58 @@ def open_image(path):
     return im
 
 
-def save_image(im, path, save_folder, save_as, mode, string="processed",
-               optimize=False, background=None):
+def validate_mode(im, user_mode, save_as):
+    # User has given a mode
+    if user_mode:
+        if user_mode in supported_modes[save_as]:
+            return user_mode
+        else:
+            # User has given a mode, but it is NOT valid
+            print("{} mode is not compatible with {} files".format(user_mode,
+                                                                   save_as))
+            print("Aborting")
+            return
+
+    else:
+        if im.mode in supported_modes[save_as]:
+            return im.mode
+        else:
+            # Original image's mode is not valid, use one of modes supported by
+            # the saving format
+            print("{} mode is not compatible with {} files".format(user_mode,
+                                                                   save_as))
+            mode = supported_modes[save_as][-1]
+            print("Saving image as {} mode...".format(user_mode, mode))
+            return mode
+
+
+def replace_alpha(im, bg_color):
+    # Replaces the alpha channel of the given image with the given color
+    alpha = im.getchannel('A')
+    bg = Image.new("RGBA", im.size, bg_color)
+    bg.paste(im, mask=alpha)
+    return bg
+
+
+def optimize_img(im, save_as, mode):
+    if save_as.lower() == "jpg":
+        im = im.convert(mode)
+        save_params = {"quality": 85, "optimize":True}
+        return (im, save_params)
+
+    elif save_as.lower() == "png":
+        im = im.convert("P", palette=Image.ADAPTIVE)
+        save_params = {"optimize":True}
+        return (im, save_params)
+
+    else:
+        msg = "Error! Can only optimize when saving as jpg or png."
+        print(msg)
+        return
+
+
+
+def validate_save_folder(save_folder, path):
     if save_folder:
         if os.path.isdir(save_folder):
             folder = os.path.abspath(save_folder)
@@ -54,54 +98,53 @@ def save_image(im, path, save_folder, save_as, mode, string="processed",
             return
     else:
         folder = os.path.abspath(os.path.dirname(path))
-    name, extension = os.path.splitext(os.path.basename(path))
+
+    return folder
+
+
+def validate_save_format(save_as, extension):
     # Removing the 'dot' at the start
-    extension = extension[1:]
+    if extension.startswith("."):
+        extension = extension[1:]
 
     if save_as == None:
-        save_as = extension
-
-    if mode is None:
-        # User hasn't given a mode
-        mode = im.mode
-    elif mode not in supported_modes[save_as]:
-        # User has given a mode, but it is not compatible
-        print("{} mode is not compatible with {} files".format(mode, save_as))
-        print("Aborting")
-        return
-
-    if mode not in supported_modes[save_as]:
-        # Original image's mode is not compatible
-        print("{} mode is not compatible with {} files".format(mode, save_as))
-        mode = supported_modes[save_as][-1]
-        print("Saving image as {} mode...".format(mode))
-
-    ## If a image with alpha channel is going to be convert to a mode with no
-    # alpha channel, we replace the alpha channel with a color.
-    if im.mode.endswith("A") and not mode.endswith("A"):
-        alpha = im.getchannel('A')
-        bg = Image.new("RGBA", im.size, background)
-        bg.paste(im, mask=alpha)
-        im = bg
-
-    if optimize:
-        if save_as.lower() == "jpg":
-            im = im.convert(mode)
-            params = {"quality": 85, "optimize":True}
-
-        elif save_as.lower() == "png":
-            im = im.convert("P", palette=Image.ADAPTIVE)
-            params = {"optimize":True}
+        if extension in supported_formats:
+            return extension
         else:
-            msg = "Error! Can only optimize when saving as jpg or png."
-            print(msg)
-            return
+            print("{} is not a supported image type.".format(extension))
+    elif save_as in supported_formats:
+        return save_as
     else:
-        params = {}
+        print("{} is not a supported image type.".format(save_as))
+
+
+
+def save_image(im, path, save_folder, save_as, mode, string="processed",
+               optimize=False, background=None):
+
+    ## Validate save folder
+    folder = validate_save_folder(save_folder, path)
+
+    ## Extract name and extension of source file
+    name, extension = os.path.splitext(os.path.basename(path))
+
+    save_as = validate_save_format(save_as, extension)
+    mode = validate_mode(im, mode, save_as)
+
+    ## If an image with alpha channel is going to be converted to a image mode
+    # with no alpha channel, we replace the alpha channel with a solid color.
+    if im.mode.endswith("A") and not mode.endswith("A"):
+        im = replace_alpha(im, background)
+
+    # Optimize image, if needed.
+    if optimize:
+        im, save_params = optimize_img(im, save_as, mode)
+    else:
+        save_params = {}
         im = im.convert(mode)
 
     # New name, so the original image isn't overwritten
     new_image_name = "{}.{}.{}".format(name, string, save_as)
     new_image_path = os.path.join(folder, new_image_name)
-    im.save(new_image_path, **params)
+    im.save(new_image_path, **save_params)
     print("{} saved successfully.".format(new_image_path))
