@@ -141,3 +141,15 @@ If the mode of the original image is not supported by the given format it will b
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--save_folder=[folder]` The directory where the images will be saved.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+
+* **colorswap**: Replaces the color of all pixels of the image with another  
+`process_img colorswap [file/directory] [before_color] [after_color] [optional arguments]`  
+`[before_color]` and `[after_color]` must be a list of integers for each color value or a hexadecimal color name between quotes.  
+
+**optional arguments**  
+`--save_as=[format]` must be one of the supported formats, listed above and in lower case  
+`--save_folder=[folder]` The directory where the images will be saved.  
+`--mode=[mode]` The color mode to use when saving the image (RGB, RGBA, CMYK, ...)  
+If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
+`--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+`-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
