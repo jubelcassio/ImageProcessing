@@ -14,6 +14,6 @@ resampling_filters = ["NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX",
                       "HAMMING"]
 
 __all__ = ['convert', 'resize', 'fit', 'scale', 'info', 'optimize', 'invert',
-           'mirror', 'dessaturate', 'colorswap']
+           'mirror', 'dessaturate', 'colorswap', 'colorinfo']
 
 from . import *

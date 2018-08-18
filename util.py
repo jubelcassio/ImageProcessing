@@ -6,6 +6,37 @@ import re
 import argparse
 
 
+def box_tuple(box):
+    ## Checks if size can be turned into a tuple of four integer values greater
+    # than 1
+    box = box.split(',')
+
+    if len(box) != 4:
+        msg = ("The box {} must have 4 values (left, upper, right, lower)".format(box))
+        raise argparse.ArgumentTypeError(msg)
+
+    try:
+        box = tuple( [int(n) for n in box] )
+    except:
+        msg = ("{} values must be integer numbers".format(box))
+        raise argparse.ArgumentTypeError(msg)
+
+    if any([coord < 0 for coord in box]):
+        # Values must not negative
+        msg = ("{} values must be positive numbers".format(box))
+        raise argparse.ArgumentTypeError(msg)
+
+    if box[0] >= box[2]:
+        msg = ("(left, upper, right, lower)={} LEFT must be smaller than RIGHT.".format(box))
+        raise argparse.ArgumentTypeError(msg)
+
+    if box[1] >= box[3]:
+        msg = ("(left, upper, right, lower)={} UPPER must be smaller than LOWER.".format(box))
+        raise argparse.ArgumentTypeError(msg)
+    
+    return box
+
+
 def rgb_color_type(color):
 
     if color.startswith("#"):
