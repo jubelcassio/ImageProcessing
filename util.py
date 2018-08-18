@@ -6,18 +6,39 @@ import re
 import argparse
 
 
+def coordinates(xy):
+    ## Checks if xy can be turned into a coordinate tuple (int, int)
+    xy = xy.split(',')
+
+    if len(xy) != 2:
+        msg = ("The coordinates {} must have 2 values (x,y)".format(xy))
+        raise argparse.ArgumentTypeError(msg)
+    
+    try:
+        xy = int(xy[0]), int(xy[1])
+    except ValueError:
+        msg = ("The coordinates {} must be 2 integers (x,y)".format(xy))
+        raise argparse.ArgumentTypeError(msg)
+    
+    if xy[0] < 0 or xy[1] < 0:
+        msg = ("The coordinates {} must positive".format(xy))
+        raise argparse.ArgumentTypeError(msg)
+    
+    return xy
+
+
 def box_tuple(box):
     ## Checks if size can be turned into a tuple of four integer values greater
     # than 1
     box = box.split(',')
 
     if len(box) != 4:
-        msg = ("The box {} must have 4 values (left, upper, right, lower)".format(box))
+        msg = ("The box {} must have 4 values (left,upper,right,lower)".format(box))
         raise argparse.ArgumentTypeError(msg)
 
     try:
         box = tuple( [int(n) for n in box] )
-    except:
+    except ValueError:
         msg = ("{} values must be integer numbers".format(box))
         raise argparse.ArgumentTypeError(msg)
 
