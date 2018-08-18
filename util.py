@@ -54,12 +54,12 @@ def validate_mode(im, user_mode, save_as):
         if im.mode in supported_modes[save_as]:
             return im.mode
         else:
-            # Original image's mode is not valid, use one of modes supported by
-            # the saving format
-            print("{} mode is not compatible with {} files".format(user_mode,
+            # Original image's mode is not valid, use one of modes supported
+            # by the saving format
+            print("{} mode is not compatible with {} files".format(im.mode,
                                                                    save_as))
             mode = supported_modes[save_as][-1]
-            print("Saving {} image as {} mode...".format(user_mode, mode))
+            print("Saving {} image as {} mode...".format(im.mode, mode))
             return mode
 
 
