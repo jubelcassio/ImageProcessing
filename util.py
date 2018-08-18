@@ -59,7 +59,7 @@ def validate_mode(im, user_mode, save_as):
             print("{} mode is not compatible with {} files".format(user_mode,
                                                                    save_as))
             mode = supported_modes[save_as][-1]
-            print("Saving image as {} mode...".format(user_mode, mode))
+            print("Saving {} image as {} mode...".format(user_mode, mode))
             return mode
 
 
