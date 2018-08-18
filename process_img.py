@@ -65,6 +65,8 @@ if __name__ == '__main__':
             call_action(mirror, sys.argv[2], sys.argv[3:])
         elif action == "dessaturate":
             call_action(dessaturate, sys.argv[2], sys.argv[3:])
+        elif action == "colorswap":
+            call_action(colorswap, sys.argv[2], sys.argv[3:])
         else:
             msg = "Invalid action: '{}', choose from: {}".format(action,
                                                                  action_list)
