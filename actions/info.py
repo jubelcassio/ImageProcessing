@@ -14,6 +14,6 @@ def run(path):
 
 def parse(user_args):
     ## Parse the inputs
-    parser = argparse.ArgumentParser(prog="convert")
+    parser = argparse.ArgumentParser(prog="info")
 
     return vars(parser.parse_args(user_args))
