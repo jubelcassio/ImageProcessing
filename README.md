@@ -153,3 +153,11 @@ If the mode of the original image is not supported by the given format it will b
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+
+
+* **info**: Counts how many pixels of each color are in the image or in the given area from the image  
+`process_img colorinfo [file/directory] [optional arguments]`  
+
+**optional arguments**  
+`[--box]` A box of coordinates (left, upper, right, lower) representing the area to count the pixels  
+`[--pixel]` The coordinates of a single pixel, prints the color of that pixel.
