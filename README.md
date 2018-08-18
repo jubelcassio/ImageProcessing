@@ -145,7 +145,6 @@ If the mode of the original image is not supported by the given format it will b
 * **colorswap**: Replaces the color of all pixels of the image with another  
 `process_img colorswap [file/directory] [before_color] [after_color] [optional arguments]`  
 `[before_color]` and `[after_color]` must be a list of integers for each color value or a hexadecimal color name between quotes.  
-
 **optional arguments**  
 `--save_as=[format]` must be one of the supported formats, listed above and in lower case  
 `--save_folder=[folder]` The directory where the images will be saved.  
@@ -157,7 +156,6 @@ If the mode of the original image is not supported by the given format it will b
 
 * **info**: Counts how many pixels of each color are in the image or in the given area from the image  
 `process_img colorinfo [file/directory] [optional arguments]`  
-
 **optional arguments**  
 `[--box]` A box of coordinates (left, upper, right, lower) representing the area to count the pixels  
 `[--pixel]` The coordinates of a single pixel, prints the color of that pixel.

@@ -11,6 +11,7 @@ Integration Tests
 Documentation should have example usages of this program.
 
 Could Have:
+Add a Threshold of hue values for the colorswap module.
 Filter input images by name (with regex?).
 Filter input images by file type.
 Works on Linux and Windows.
