@@ -49,6 +49,12 @@ If the mode of the original image is not supported by the given format it will b
 `--save_folder=[folder]` The directory where the images will be saved.  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+**example usage**  
+Convert a directory of png images to jpg  
+`process_img convert /png_images jpg`  
+Replaces the transparency of a png image with a pink color  
+`process_img convert transparent_img.png png --mode=RGB --background=255,0,255`  
+
 
 * **resize**: Resizes image(s) to given width and height.  
 `process_img resize [file/directory] [width] [height] [optional arguments]`  
@@ -62,6 +68,11 @@ If the mode of the original image is not supported by the given format it will b
 "NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.   
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+**example usage**  
+Resize all images of a directory to a size of 336 x 280.  
+`process_img resize /images 336 280`  
+Resize images to a size 336 x 280 while converting them to jpg and optimizing for web.  
+`process_img resize /images 336 280 --save_as=jpg -optimize`  
 
 
 * **scale**: Scale image(s) by given scalar.  
@@ -76,13 +87,16 @@ If the mode of the original image is not supported by the given format it will b
 "NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+**example usage**  
+Scale images of a directory by twice their size.  
+`process_img scale /images 2`  
 
 
 * **fit**: Resize an image to a given width / height while maintaining its aspect ratio. The offset area is transparent or filled with a white background, depending on the mode of the original image.  
 `process_img fit [file/directory] [width] [height] [optional arguments]`  
 `[width]` and `[height]` must be integers.  
 `[color]` May be a hexadecimal color value ("#aabbcc" or "#aabbccff") or the rgb code for the chosen color, with each number separated by a comma and without spaces ("50,50,50" or "50,50,50,255")
---save_as=\[format] Optional argument for the format to use while saving the image. Must be one of the supported formats.  
+`--save_as=\[format]` Optional argument for the format to use while saving the image. Must be one of the supported formats.  
 **optional arguments**  
 `--color=[color]` A color to be used as the background of the resulting image. Must be in hex code format ("#fff", "#ffffff", "#ffffffff") or as a list of rgb/rgba values, separated by a comma ("255,255,255" or "255,255,255,255")  
 `--save_as=[format]` must be one of the supported formats, listed above and in lower case  
@@ -93,6 +107,11 @@ If the mode of the original image is not supported by the given format it will b
 "NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX", "HAMMING"  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+**example usage**  
+Fit images into a 400x400 image with white background. Useful for creating a grids of thumbnails that must have the same dimensions.  
+`process_img fit /images 400 400 --color=255,255,255 --background=255,255,255`  
+Same usage as the previous, but now we save the images as jpg and optimize their file size.  
+`process_img fit /images 400 400 --color=255,255,255 --background=255,255,255 --save_as=jpg -optimize`  
 
 
 * **info**: Prints the path, format, color mode and dimensions of the given image.  
@@ -108,6 +127,9 @@ If the mode of the original image is not supported by the given format it will b
 `--save_folder=[folder]` The directory where the images will be saved.  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+**example usage**  
+Grayscaling all images of a directory:  
+`process_img dessaturate /images`  
 
 
 * **invert**: Invert the colors of the image.  
@@ -119,6 +141,9 @@ If the mode of the original image is not supported by the given format it will b
 `--save_folder=[folder]` The directory where the images will be saved.  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+**example usage**  
+Invert the colors of all images of a directory:  
+`process_img invert /images`  
 
 
 * **mirror**: Mirrors the images, by horizontal, vertical or both axis.  
@@ -131,6 +156,11 @@ If the mode of the original image is not supported by the given format it will b
 `--save_folder=[folder]` The directory where the images will be saved.  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+**example usage**  
+Vertically mirroring of all images of a directory:  
+`process_img mirror /images v`  
+Vertically and Horizontally mirroring of all images of a directory:  
+`process_img mirror /images vh`  
 
 
 * **optimize**: Minimizes the image size.  
@@ -141,6 +171,10 @@ If the mode of the original image is not supported by the given format it will b
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--save_folder=[folder]` The directory where the images will be saved.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
+**example usage**  
+Optimize all images of a directory and save them as jpg:  
+`process_img optimize /images --save_as=jpg`  
+
 
 * **colorswap**: Replaces the color of all pixels of the image with another  
 `process_img colorswap [file/directory] [before_color] [after_color] [optional arguments]`  
@@ -152,10 +186,24 @@ If the mode of the original image is not supported by the given format it will b
 If the mode of the original image is not supported by the given format it will be saved in RGB or RGBA, depending on the image type.  
 `--background` The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.  
 `-optimize` If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images.  
+**example usage**  
+Swaps the pink background of an image with transparent:  
+`process_img colorswap pink_bg_image.png 255,0,255,255 255,255,255,0`  
+Swaps the transparent background of an image with a white one.  
+`process_img colorswap transparent_bg_image.png 255,255,255,0 255,255,255,255`  
+Swaps the transparent background of an image with a white one and save them as optimized jpg.  
+`process_img colorswap transparent_bg_image.png 255,255,255,0 255,255,255,255 --save_as=jpg -optimize`  
 
 
-* **info**: Counts how many pixels of each color are in the image or in the given area from the image  
+* **colorinfo**: Counts how many pixels of each color are in the image or in the given area from the image  
 `process_img colorinfo [file/directory] [optional arguments]`  
 **optional arguments**  
 `[--box]` A box of coordinates (left, upper, right, lower) representing the area to count the pixels  
-`[--pixel]` The coordinates of a single pixel, prints the color of that pixel.
+`[--pixel]` The coordinates of a single pixel, prints the color of that pixel.  
+**example usage**  
+Count the colors of the whole image.  
+`process_img colorinfo image.png`  
+Count the colors of a 100 x 100 px square located at the top left of the image.  
+`process_img colorinfo image.png --box=0,0,100,100`  
+Check the color of a pixel at 255,100 coordinates.  
+`process_img colorinfo image.png --pixel=255,100`  
