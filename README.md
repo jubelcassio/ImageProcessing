@@ -22,14 +22,25 @@ Just clone the repository anywhere and call it by the full path while invoking p
 ` python /home/user/scripts/ImageProcessing/process_img.py ... `
 
 Alternatively, you can set the program in your PATH variable, so its accessible from anywhere in the system:  
-TODO: Check if the Linux instructions work.  
 
 **Linux:**  
 Clone the repository into a directory of your choice (for example, /home/username/scripts)  
-` git clone https://github.com/jubelcassio/ImageProcessing.git `
+` git clone https://github.com/jubelcassio/ImageProcessing.git `  
 Add the chosen directory into your PATH variable  
+Set the permissions for the process_img.py file inside the ImageProcessing folder.  
+` chmod +wx process_img.py `  
+Create a symlink on the scripts directory to the process_img.py file  
+` ln -s ImageProcess/process_img.py process_img.py`  
 Now you can call the process_img file from any other directory on your system.  
-`process_img.py ...`
+`process_img [action] [file/directory] [arguments] `  
+The tree of your directories should look like this:
+<pre>
+/home/username/scripts  
+                  |---ImageProcessing  
+                            |---process_img.py  
+                            |--- ...  
+                  |---process_img.py          <--- symlink  
+</pre>
 
 **Windows:**  
 Clone the repository into a directory of your choice (for example, C:\user_scripts\)  
