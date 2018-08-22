@@ -1,4 +1,5 @@
-supported_formats = ["bmp","eps","gif","ico","jpg","jpeg","png","tiff"]
+supported_formats = ["bmp","eps","gif","ico","jpg","jpeg","png","tiff",
+                     "BMP","EPS","GIF","ICO","JPG","JPEG","PNG","TIFF"]
 supported_modes = {
     "bmp":  ["1","L","P","RGB"],
     "eps":  ["L", "LAB", "CMYK", "RGB"],

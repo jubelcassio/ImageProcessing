@@ -93,7 +93,7 @@ def open_image(path):
 def validate_mode(im, user_mode, save_as):
     # User has given a mode
     if user_mode:
-        if user_mode in supported_modes[save_as]:
+        if user_mode in supported_modes[save_as.lower()]:
             return user_mode
         else:
             # User has given a mode, but it is NOT valid
@@ -103,7 +103,7 @@ def validate_mode(im, user_mode, save_as):
             return
 
     else:
-        if im.mode in supported_modes[save_as]:
+        if im.mode in supported_modes[save_as.lower()]:
             return im.mode
         else:
             # Original image's mode is not valid, use one of modes supported

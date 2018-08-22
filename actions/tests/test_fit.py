@@ -1,6 +1,5 @@
 from PIL import Image
 from actions import fit
-import pytest
 from argparse import ArgumentTypeError
 
 def test_parse():

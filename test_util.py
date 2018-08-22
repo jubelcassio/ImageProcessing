@@ -1,5 +1,7 @@
 from PIL import Image
-
+from unittest.mock import patch, MagicMock
+import pytest
+import os
 import util
 
 def test_rgb_color_type():
@@ -61,3 +63,40 @@ def test_validate_save_format():
     assert util.validate_save_format(None, ".jpg") == "jpg"
     # User did not gave a valid saving format and the file extension is invalid
     assert util.validate_save_format(None, ".txt") == None
+
+
+@patch('util.Image')
+def test_open_image(mocked_PIL_Image):
+
+    real_path = os.path.realpath("")
+
+    ## Test opening image with supported extension
+    image_path = "imagepath.jpg"
+    path = os.path.join(real_path, image_path)
+
+    util.open_image(path)
+    mocked_PIL_Image.open.assert_any_call(path)
+
+
+    # Reseting the calls
+    mocked_PIL_Image.open.reset_mock()
+
+
+    ## Test opening image with UNsupported extension
+    image_path = "imagepath.ubs"
+    path = os.path.join(real_path, image_path)
+
+    util.open_image(path)
+    mocked_PIL_Image.open.assert_not_called()
+
+
+    # Reseting the calls
+    mocked_PIL_Image.open.reset_mock()
+
+
+    ## Test opening image with UPPERCASE extension
+    image_path = "imagepath.JPG"
+    path = os.path.join(real_path, image_path)
+
+    util.open_image(path)
+    mocked_PIL_Image.open.assert_any_call(path)
