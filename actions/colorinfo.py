@@ -30,7 +30,7 @@ def parse(user_args):
     ## Parse the inputs
     parser = argparse.ArgumentParser(prog="colorinfo")
 
-    parser.add_argument('--box', type=util.box_tuple)
-    parser.add_argument('--pixel', type=util.coordinates)
+    parser.add_argument('--box', type=util.rectangular_box_type)
+    parser.add_argument('--pixel', type=util.coordinates_type)
 
     return vars(parser.parse_args(user_args))

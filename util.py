@@ -6,7 +6,7 @@ import re
 import argparse
 
 
-def coordinates(xy):
+def coordinates_type(xy):
     ## Checks if xy can be turned into a coordinate tuple (int, int)
     xy = xy.split(',')
 
@@ -27,7 +27,7 @@ def coordinates(xy):
     return xy
 
 
-def box_tuple(box):
+def rectangular_box_type(box):
     ## Checks if size can be turned into a tuple of four integer values greater
     # than 1
     box = box.split(',')
@@ -36,9 +36,10 @@ def box_tuple(box):
         msg = ("The box {} must have 4 values (left,upper,right,lower)".format(box))
         raise argparse.ArgumentTypeError(msg)
 
-    try:
+    if all([n.isdigit() for n in box]):
+        # Values must be integers
         box = tuple( [int(n) for n in box] )
-    except ValueError:
+    else:
         msg = ("{} values must be integer numbers".format(box))
         raise argparse.ArgumentTypeError(msg)
 
@@ -68,11 +69,21 @@ def rgb_color_type(color):
             raise argparse.ArgumentTypeError(msg)
 
     color = color.split(',')
-    if 3 <= len(color) <= 4 and all([c.isdigit() for c in color]):
-        return tuple(int(c) for c in color)
-    else:
-        msg = "{} is not a valid rgb color.".format(color)
+
+    if len(color) < 3 or len(color) > 4:
+        # Must be a 3 or 4 length tuple
+        msg = "{} must have 3 or 4 values.".format(color)
         raise argparse.ArgumentTypeError(msg)
+    elif not all([c.isdigit() for c in color]):
+        # All values must be integers
+        msg = "{} values must be integers.".format(color)
+        raise argparse.ArgumentTypeError(msg)
+    elif not all([0 <= int(c) <= 255 for c in color]):
+        # All values must in positive 8 bit range
+        msg = "{} values must be between 0 and 255".format(color)
+        raise argparse.ArgumentTypeError(msg)
+    else:
+        return tuple(int(c) for c in color)
 
 
 def open_image(path):
@@ -149,6 +160,7 @@ def validate_save_folder(save_folder, path):
             print("{} is not a valid directory.".format(save_folder))
             return
     else:
+        # Save folder was not given by the user
         folder = os.path.abspath(os.path.dirname(path))
 
     return folder
