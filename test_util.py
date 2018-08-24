@@ -157,8 +157,3 @@ def test_validate_save_format():
     assert util.validate_save_format(None, ".jpg") == "jpg"
     # User did not gave a valid saving format and the file extension is invalid
     assert util.validate_save_format(None, ".txt") == None
-
-
-def test_save_image():
-    # TODO
-    pass

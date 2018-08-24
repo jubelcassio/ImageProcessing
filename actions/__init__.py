@@ -18,3 +18,17 @@ __all__ = ['convert', 'resize', 'fit', 'scale', 'info', 'optimize', 'invert',
            'mirror', 'dessaturate', 'colorswap', 'colorinfo']
 
 from . import *
+
+modules = {
+    "convert" : convert,
+    "resize" : resize,
+    "fit" : fit,
+    "scale" : scale,
+    "info" : info,
+    "optimize" : optimize,
+    "invert" : invert,
+    "mirror" : mirror,
+    "dessaturate" : dessaturate,
+    "colorswap" : colorswap,
+    "colorinfo" : colorinfo
+    }

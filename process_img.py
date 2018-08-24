@@ -47,28 +47,8 @@ if __name__ == '__main__':
     else:
         action = sys.argv[1]
 
-        if action == "convert":
-            call_action(convert, sys.argv[2], sys.argv[3:])
-        elif action == "resize":
-            call_action(resize, sys.argv[2], sys.argv[3:])
-        elif action == "scale":
-            call_action(scale, sys.argv[2], sys.argv[3:])
-        elif action == "fit":
-            call_action(fit, sys.argv[2], sys.argv[3:])
-        elif action == "info":
-            call_action(info, sys.argv[2], sys.argv[3:])
-        elif action == "optimize":
-            call_action(optimize, sys.argv[2], sys.argv[3:])
-        elif action == "invert":
-            call_action(invert, sys.argv[2], sys.argv[3:])
-        elif action == "mirror":
-            call_action(mirror, sys.argv[2], sys.argv[3:])
-        elif action == "dessaturate":
-            call_action(dessaturate, sys.argv[2], sys.argv[3:])
-        elif action == "colorswap":
-            call_action(colorswap, sys.argv[2], sys.argv[3:])
-        elif action == "colorinfo":
-            call_action(colorinfo, sys.argv[2], sys.argv[3:])
+        if action in modules:
+            call_action(modules[action], sys.argv[2], sys.argv[3:])
         else:
             msg = "Invalid action: '{}', choose from: {}".format(action,
                                                                  action_list)
