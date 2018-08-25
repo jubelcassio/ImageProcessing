@@ -17,26 +17,27 @@ def invert(im):
         print("Can only invert RGB or RGBA images.")
 
 
-def run(path, save_folder, save_as, mode, optimize, background):
+def subparser(subparser):
+    invert_parser = subparser.add_parser("invert")
+
+    invert_parser.set_defaults(command="invert")
+
+    invert_parser.add_argument('path')
+    invert_parser.add_argument('--save_folder', type=str, default=None)
+    invert_parser.add_argument('--save_as', type=str, choices=supported_formats,
+                               default=None)
+    invert_parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    invert_parser.add_argument('--background', type=util.rgb_color_type,
+                               default="#fff")
+    invert_parser.add_argument('-optimize', action="store_true")
+
+
+def run(path, namespace):
     im = util.open_image(path)
     if im is not None:
         inverted_im = invert(im)
         if inverted_im is None:
             return
-        util.save_image(inverted_im, path, save_folder, save_as, mode,
-                        "inverted", optimize, background)
-
-
-def parse(user_args):
-    ## Parse the inputs
-    parser = argparse.ArgumentParser(prog="invert")
-
-    parser.add_argument('--save_folder', type=str, default=None)
-    parser.add_argument('--save_as', type=str, choices=supported_formats,
-                        default=None)
-    parser.add_argument('--mode', type=str, choices=all_modes, default=None)
-    parser.add_argument('--background', type=util.rgb_color_type,
-                        default="#fff")
-    parser.add_argument('-optimize', action="store_true")
-
-    return vars(parser.parse_args(user_args))
+        util.save_image(inverted_im, namespace.path, namespace.save_folder,
+                        namespace.save_as, namespace.mode,
+                        "inverted", namespace.optimize, namespace.background)

@@ -23,32 +23,32 @@ def swap(image, before_color, after_color):
     return image
 
 
-def run(path, before_color, after_color, save_as, save_folder, mode, optimize,
-        background):
+def run(path, namespace):
     im = util.open_image(path)
     if im is not None:
-        im = swap(im, before_color, after_color)
-        util.save_image(im, path, save_folder, save_as, mode, "colorswaped",
-                        optimize, background)
+        im = swap(im, namespace.before_color, namespace.after_color)
+        util.save_image(im, path, namespace.save_folder, namespace.save_as,
+                        namespace.mode, "colorswaped", namespace.optimize,
+                        namespace.background)
 
 
-def parse(user_args):
-    ## Parse the inputs
-    parser = argparse.ArgumentParser(prog="colorswap")
+def subparser(subparser):
+    colorswap_parser = subparser.add_parser("colorswap")
 
+    ## This is used to identify which command is being run
+    colorswap_parser.set_defaults(command="colorswap")
+
+    colorswap_parser.add_argument('path')
     ## NOTE: When using hex color codes as arguments for before and after
     # colors, use quotes around the color name (Example: "#ff0000ff").
     # Otherwise sys.argv will not read the arguments corretly.
     # I believe the reason is that sys.argv will think everything after the
     # pound sign is a python comment, except if the argument is inside quotes.
-
-    parser.add_argument('before_color', type=util.rgb_color_type)
-    parser.add_argument('after_color', type=util.rgb_color_type)
-    parser.add_argument('--save_as', type=str, choices=supported_formats)
-    parser.add_argument('--save_folder', type=str, default=None)
-    parser.add_argument('--mode', type=str, choices=all_modes, default=None)
-    parser.add_argument('--background', type=util.rgb_color_type,
-                        default="#fff")
-    parser.add_argument('-optimize', action="store_true")
-
-    return vars(parser.parse_args(user_args))
+    colorswap_parser.add_argument('before_color', type=util.rgb_color_type)
+    colorswap_parser.add_argument('after_color', type=util.rgb_color_type)
+    colorswap_parser.add_argument('--save_as', type=str, choices=supported_formats)
+    colorswap_parser.add_argument('--save_folder', type=str, default=None)
+    colorswap_parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    colorswap_parser.add_argument('--background', type=util.rgb_color_type,
+                                  default="#fff")
+    colorswap_parser.add_argument('-optimize', action="store_true")

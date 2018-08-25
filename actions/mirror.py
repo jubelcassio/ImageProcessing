@@ -13,26 +13,26 @@ def mirror(im, mirror):
         im = ImageOps.flip(im)
     return im
 
+def subparser(subparser):
+    mirror_parser = subparser.add_parser("mirror")
+
+    mirror_parser.set_defaults(command="mirror")
+
+    mirror_parser.add_argument('path')
+    mirror_parser.add_argument('mirror_mode', type=str, choices=mirror_modes)
+    mirror_parser.add_argument('--save_folder', type=str, default=None)
+    mirror_parser.add_argument('--save_as', type=str, choices=supported_formats,
+                        default=None)
+    mirror_parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    mirror_parser.add_argument('--background', type=util.rgb_color_type,
+                        default="#fff")
+    mirror_parser.add_argument('-optimize', action="store_true")
 
 
-def run(path, mirror_mode, save_folder, save_as, mode, optimize, background):
+def run(path, namespace):
     im = util.open_image(path)
     if im is not None:
-        mirrored_im = mirror(im, mirror_mode)
-        util.save_image(mirrored_im, path, save_folder, save_as, mode,
-                        "mirrored", optimize, background)
-
-def parse(user_args):
-    ## Parse the inputs
-    parser = argparse.ArgumentParser(prog="mirror")
-
-    parser.add_argument('mirror_mode', type=str, choices=mirror_modes)
-    parser.add_argument('--save_folder', type=str, default=None)
-    parser.add_argument('--save_as', type=str, choices=supported_formats,
-                        default=None)
-    parser.add_argument('--mode', type=str, choices=all_modes, default=None)
-    parser.add_argument('--background', type=util.rgb_color_type,
-                        default="#fff")
-    parser.add_argument('-optimize', action="store_true")
-
-    return vars(parser.parse_args(user_args))
+        mirrored_im = mirror(im, namespace.mirror_mode)
+        util.save_image(mirrored_im, namespace.path, namespace.save_folder,
+                        namespace.save_as, namespace.mode, "mirrored",
+                        namespace.optimize, namespace.background)

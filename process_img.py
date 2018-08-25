@@ -10,7 +10,7 @@ import os
 from PIL import Image, ImageColor
 import argparse
 import re
-from actions import *
+from actions import modules
 
 
 action_list = ['convert', 'resize', 'scale', 'fit', 'info']
@@ -42,14 +42,29 @@ def call_action(action, path, user_args):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Usage:\nprocess_img [action] [file/directory] [arguments]")
-    else:
-        action = sys.argv[1]
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
 
-        if action in modules:
-            call_action(modules[action], sys.argv[2], sys.argv[3:])
-        else:
-            msg = "Invalid action: '{}', choose from: {}".format(action,
-                                                                 action_list)
-            print(msg)
+    for module in modules.keys():
+        modules[module].subparser(subparsers)
+
+    namespace = parser.parse_args(sys.argv[1:])
+
+
+    ## Execute script on a single file.
+    if os.path.isfile(namespace.path):
+        modules[namespace.command].run(namespace.path, namespace)
+
+    ## Execute script on all image files in a directory.
+    elif os.path.isdir(namespace.path):
+        file_list = os.listdir(namespace.path)
+        for file_ in file_list:
+            f_path = os.path.join(namespace.path, file_)
+            if os.path.isfile(f_path):
+                print("\n...Processing {} file".format(f_path))
+                modules[namespace.command].run(f_path, namespace)
+
+    else:
+        msg = "{} is not a valid file path or directory."
+        print(msg.format(path))
+
