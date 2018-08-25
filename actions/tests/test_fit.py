@@ -1,44 +1,54 @@
+import argparse
 from PIL import Image
 from actions import fit
-from argparse import ArgumentTypeError
 
 def test_parse():
+    main_parser = argparse.ArgumentParser()
+    subparsers = main_parser.add_subparsers()
+    fit.subparser(subparsers)
+
     # No arguments
-    args = ["200", "100"]
-    result = {"width": 200, "height": 100, "color": (255,255,255),
-              "save_folder": None, "save_as": None, "mode": None,
-              "resample": None, "optimize": False, "background": (255,255,255)}
-    assert fit.parse(args) == result
+    args = ["fit", "image.jpg", "200", "100"]
+    result = {"command": "fit", "path": "image.jpg", "width": 200,
+              "height": 100, "color": (255,255,255), "save_folder": None,
+              "save_as": None, "mode": None, "resample": None,
+              "optimize": False, "background": (255,255,255)}
+    assert vars(main_parser.parse_args(args)) == result
 
     # All arguments
-    args = ["200", "100", "--color=#234aaa", "--save_as=png",
-            "--background=#bbb", "-optimize", "--save_folder=home/output",
-            "--mode=RGB", "--resample=BOX"]
-    result = {"width": 200, "height": 100, "color": (35,74,170),
+    args = ["fit", "image.jpg", "200", "100", "--color=#234aaa",
+            "--save_as=png", "--background=#bbb", "-optimize",
+            "--save_folder=home/output", "--mode=RGB", "--resample=BOX"]
+    result = {"command": "fit", "path": "image.jpg", "width": 200,
+              "height": 100, "color": (35,74,170),
               "save_folder": "home/output", "save_as": "png", "mode": "RGB",
-              "resample": "BOX", "optimize": True, "background": (187,187,187)}
-    assert fit.parse(args) == result
+              "resample": "BOX", "optimize": True, "background": (187,187,187)
+              }
+    assert vars(main_parser.parse_args(args)) == result
 
     # Color hex code with alpha
-    args = ["200", "100", "--color=#234aaa11"]
-    result = {"width": 200, "height": 100, "color": (35,74,170,17),
-              "save_folder": None, "save_as": None, "mode": None,
-              "resample": None, "optimize": False, "background": (255,255,255)}
-    assert fit.parse(args) == result
+    args = ["fit", "image.jpg", "200", "100", "--color=#234aaa11"]
+    result = {"command": "fit", "path": "image.jpg", "width": 200,
+              "height": 100, "color": (35,74,170,17), "save_folder": None,
+              "save_as": None, "mode": None, "resample": None,
+              "optimize": False, "background": (255,255,255)}
+    assert vars(main_parser.parse_args(args)) == result
 
     # Color rgb
-    args = ["200", "100", "--color=35,74,170"]
-    result = {"width": 200, "height": 100, "color": (35,74,170),
-              "save_folder": None, "save_as": None, "mode": None,
-              "resample": None, "optimize": False, "background": (255,255,255)}
-    assert fit.parse(args) == result
+    args = ["fit", "image.jpg", "200", "100", "--color=35,74,170"]
+    result = {"command": "fit", "path": "image.jpg", "width": 200,
+              "height": 100, "color": (35,74,170), "save_folder": None,
+              "save_as": None, "mode": None, "resample": None,
+              "optimize": False, "background": (255,255,255)}
+    assert vars(main_parser.parse_args(args)) == result
 
     # Color rgba
-    args = ["200", "100", "--color=35,74,170,17"]
-    result = {"width": 200, "height": 100, "color": (35,74,170,17),
-              "save_folder": None, "save_as": None, "mode": None,
-              "resample": None, "optimize": False, "background": (255,255,255)}
-    assert fit.parse(args) == result
+    args = ["fit", "image.jpg", "200", "100", "--color=35,74,170,17"]
+    result = {"command": "fit", "path": "image.jpg", "width": 200,
+              "height": 100, "color": (35,74,170,17), "save_folder": None,
+              "save_as": None, "mode": None, "resample": None,
+              "optimize": False, "background": (255,255,255)}
+    assert vars(main_parser.parse_args(args)) == result
 
 
 def test_fit():
