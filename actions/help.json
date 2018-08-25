@@ -1,0 +1,55 @@
+{
+    "global": "python process_img.py [action] [file/directory] [arguments]\nAvailable actions:",
+    "modules" :{
+        "convert": {
+            "summarized": "Converts image(s) to given format.",
+            "verbose": []
+            },
+        "resize": {
+            "summarized": "Resizes image(s) to given width and height.",
+            "verbose": []
+            },
+        "fit": {
+            "summarized": "Resize an image to a given width / height while maintaining its aspect ratio.",
+            "verbose": []
+            },
+        "scale": {
+            "summarized": "Scale image(s) by given scalar.",
+            "verbose": []
+            },
+        "info": {
+            "summarized": "Prints the path, format, color mode and dimensions of the given image.",
+            "verbose": []
+            },
+        "optimize": {
+            "summarized": "Minimizes the image size.",
+            "verbose": []
+            },
+        "invert": {
+            "summarized": "Invert the colors of the image.",
+            "verbose": []
+            },
+        "mirror": {
+            "summarized": "Mirrors the images, by horizontal, vertical or both axis.",
+            "verbose": []
+            },
+        "dessaturate": {
+            "summarized": "Grayscales the image.",
+            "verbose": []
+            },
+        "colorswap": {
+            "summarized": "Replaces the color of all pixels of the image with another",
+            "verbose": []
+            },
+        "colorinfo": {
+            "summarized": "Counts how many pixels of each color are in the image or in the given area from the image",
+            "verbose": [
+                        "colorinfo: Counts how many pixels of each color are in the image or in the given area from the image.\n",
+                        "    process_img colorinfo [file/directory] [optional arguments]\n",
+                        "optional arguments\n",
+                        "    [--box] A box of coordinates (left, upper, right, lower) representing the area to count the pixels\n",
+                        "    [--pixel] The coordinates of a single pixel, prints the color of that pixel.\n"
+                    ]
+            }
+    }
+}

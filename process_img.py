@@ -10,10 +10,8 @@ import os
 from PIL import Image, ImageColor
 import argparse
 import re
-from actions import *
+from actions import modules
 
-
-action_list = ['convert', 'resize', 'scale', 'fit', 'info']
 
 def call_action(action, path, user_args):
     '''
@@ -47,9 +45,12 @@ if __name__ == '__main__':
     else:
         action = sys.argv[1]
 
-        if action in modules:
+        if action == "help":
+            kwargs = modules[action].parse(sys.argv[2:])
+            modules[action].run(kwargs)
+
+        elif action in modules.keys():
             call_action(modules[action], sys.argv[2], sys.argv[3:])
         else:
-            msg = "Invalid action: '{}', choose from: {}".format(action,
-                                                                 action_list)
-            print(msg)
+            msg = "Invalid action: '{}', choose from: {}"
+            print( msg.format(action, list(modules.keys())) )

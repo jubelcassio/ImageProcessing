@@ -15,7 +15,7 @@ resampling_filters = ["NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX",
                       "HAMMING"]
 
 __all__ = ['convert', 'resize', 'fit', 'scale', 'info', 'optimize', 'invert',
-           'mirror', 'dessaturate', 'colorswap', 'colorinfo']
+           'mirror', 'dessaturate', 'colorswap', 'colorinfo', 'help_module']
 
 from . import *
 
@@ -30,5 +30,6 @@ modules = {
     "mirror" : mirror,
     "dessaturate" : dessaturate,
     "colorswap" : colorswap,
-    "colorinfo" : colorinfo
+    "colorinfo" : colorinfo,
+    "help" : help_module
     }
