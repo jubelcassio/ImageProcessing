@@ -1,21 +1,30 @@
-from PIL import Image
+import argparse
 from actions import resize
+from PIL import Image
 
 def test_parse():
-    args = ["200", "100"]
-    result = {"width": 200, "height": 100, "save_as": None, "optimize": False,
+    main_parser = argparse.ArgumentParser()
+    subparsers = main_parser.add_subparsers()
+    resize.subparser(subparsers)
+
+    args = ["resize", "image.jpg", "200", "100"]
+    result = {"command": "resize", "path": "image.jpg", "width": 200,
+              "height": 100, "save_as": None, "optimize": False,
               "save_folder": None, "mode": None, "resample": None,
               "background": (255,255,255)}
 
-    assert resize.parse(args) == result
+    assert vars(main_parser.parse_args(args)) == result
 
-    args = ["200", "100", "--save_as=png", "--save_folder=home/output",
-            "--mode=RGB", "--background=#bbb", "--resample=BOX", "-optimize"]
-    result = {"width": 200, "height": 100, "save_as": "png", "optimize": True,
+    args = ["resize", "image.jpg", "200", "100", "--save_as=png",
+            "--save_folder=home/output", "--mode=RGB", "--background=#bbb",
+            "--resample=BOX", "-optimize"]
+    result = {"command": "resize", "path": "image.jpg", "width": 200,
+              "height": 100, "save_as": "png", "optimize": True,
               "save_folder": "home/output", "mode": "RGB", "resample": "BOX",
               "background": (187,187,187)}
 
-    assert resize.parse(args) == result
+    assert vars(main_parser.parse_args(args)) == result
+
 
 def test_resize():
     im = Image.new("RGB", (300, 100))

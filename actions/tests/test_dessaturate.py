@@ -1,19 +1,27 @@
+import argparse
 from PIL import Image
 from actions import dessaturate
 
 def test_parse():
-    args = []
-    result = {"save_as": None, "save_folder": None, "mode": None,
-              "optimize": False, "background": (255,255,255)}
+    main_parser = argparse.ArgumentParser()
+    subparsers = main_parser.add_subparsers()
+    dessaturate.subparser(subparsers)
 
-    assert dessaturate.parse(args) == result
+    args = ["dessaturate", "image.jpg"]
+    result = {"command": "dessaturate", "path": "image.jpg", "save_as": None,
+              "save_folder": None, "mode": None, "optimize": False,
+              "background": (255,255,255)}
 
-    args = ["--save_as=png", "--save_folder=home/output", "--mode=RGB",
-            "--background=#bbb", "-optimize"]
-    result = {"save_as": "png", "save_folder": "home/output", "mode": "RGB",
-              "optimize": True, "background": (187,187,187)}
+    assert vars(main_parser.parse_args(args)) == result
 
-    assert dessaturate.parse(args) == result
+    args = ["dessaturate", "image.jpg", "--save_as=png",
+            "--save_folder=home/output", "--mode=RGB", "--background=#bbb",
+            "-optimize"]
+    result = {"command": "dessaturate", "path": "image.jpg", "save_as": "png",
+              "save_folder": "home/output", "mode": "RGB", "optimize": True,
+              "background": (187,187,187)}
+
+    assert vars(main_parser.parse_args(args)) == result
 
 def test_dessaturate():
     white = (255,255,255)
@@ -24,7 +32,11 @@ def test_dessaturate():
     bg.paste(im)
 
     dessaturated_im = dessaturate.dessaturate(bg)
-    assert dessaturated_im.crop((0,0,50,50)).getcolors() == [(2500, grayed_red)]
+
+    ## Expected results
+    box_0_0_50_50 = [(2500, grayed_red)]
+
+    assert dessaturated_im.crop((0,0,50,50)).getcolors() == box_0_0_50_50
 
     transparent = (0,0)
     grayed_red = (76, 255)
@@ -33,5 +45,10 @@ def test_dessaturate():
     bg.paste(im)
 
     dessaturated_im = dessaturate.dessaturate(bg)
-    assert dessaturated_im.crop((0,0,50,50)).getcolors() == [(2500, grayed_red)]
-    assert dessaturated_im.getcolors() == [(2500, grayed_red), (7500, transparent)]
+
+    ## Expected results
+    box_0_0_50_50 = [(2500, grayed_red)]
+    box_total = [(2500, grayed_red), (7500, transparent)]
+
+    assert dessaturated_im.crop((0,0,50,50)).getcolors() == box_0_0_50_50
+    assert dessaturated_im.getcolors() == box_total

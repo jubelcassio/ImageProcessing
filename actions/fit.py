@@ -47,33 +47,33 @@ def fit(im, width, height, color, resample):
     return new_im
 
 
-def run(path, width, height, color, save_folder, save_as, mode, resample,
-        optimize, background):
+def subparser(subparser):
+    fit_parser = subparser.add_parser("fit")
+
+    fit_parser.set_defaults(command="fit")
+
+    fit_parser.add_argument('path')
+    fit_parser.add_argument('width', type=int)
+    fit_parser.add_argument('height', type=int)
+    fit_parser.add_argument('-c', '--color', type=util.rgb_color_type,
+                            default="#fff")
+    fit_parser.add_argument('--save_folder', type=str, default=None)
+    fit_parser.add_argument('--save_as', type=str, choices=supported_formats,
+                            default=None)
+    fit_parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    fit_parser.add_argument('--background', type=util.rgb_color_type,
+                            default="#fff")
+    fit_parser.add_argument('--resample', type=str, choices=resampling_filters,
+                            default=None)
+    fit_parser.add_argument('-optimize', action="store_true")
+
+
+
+def run(path, namespace):
     im = util.open_image(path)
     if im is not None:
-        fit_image = fit(im, width, height, color, resample)
-        util.save_image(fit_image, path, save_folder, save_as, mode, "fit",
-                        optimize, background)
-
-
-def parse(user_args):
-    ## Parse the inputs
-    parser = argparse.ArgumentParser(prog="fit")
-
-    parser.add_argument('width', type=int)
-    parser.add_argument('height', type=int)
-    parser.add_argument('-c', '--color', type=util.rgb_color_type,
-                        default="#fff")
-    parser.add_argument('--save_folder', type=str, default=None)
-    parser.add_argument('--save_as', type=str, choices=supported_formats,
-                        default=None)
-    parser.add_argument('--mode', type=str, choices=all_modes, default=None)
-    parser.add_argument('--background', type=util.rgb_color_type,
-                        default="#fff")
-    parser.add_argument('--resample', type=str, choices=resampling_filters,
-                        default=None)
-    parser.add_argument('-optimize', action="store_true")
-
-    args = parser.parse_args(user_args)
-
-    return vars(args)
+        fit_image = fit(im, namespace.width, namespace.height, namespace.color,
+                        namespace.resample)
+        util.save_image(fit_image, namespace.path, namespace.save_folder,
+                        namespace.save_as, namespace.mode, "fit",
+                        namespace.optimize, namespace.background)

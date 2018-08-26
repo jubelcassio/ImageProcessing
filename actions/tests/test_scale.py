@@ -1,21 +1,30 @@
-from PIL import Image
+import argparse
 from actions import scale
+from PIL import Image
 
 def test_parse():
-    args = ["2"]
-    result = {"scalar": 2, "save_as": None, "save_folder": None,
-              "mode": None, "resample": None, "optimize": False,
-              "background": (255,255,255)}
+    main_parser = argparse.ArgumentParser()
+    subparsers = main_parser.add_subparsers()
+    scale.subparser(subparsers)
 
-    assert scale.parse(args) == result
+    args = ["scale", "image.jpg", "2"]
+    result = {"command": "scale", "path": "image.jpg", "scalar": 2,
+              "save_as": None, "save_folder": None, "mode": None,
+              "resample": None, "optimize": False, "background": (255,255,255)
+              }
 
-    args = ["2", "--save_as=png", "--save_folder=home/output", "--mode=RGB",
-            "--background=#bbb", "--resample=BOX", "-optimize"]
-    result = {"scalar": 2, "save_as": "png", "save_folder": "home/output",
-              "mode": "RGB", "resample": "BOX", "optimize": True,
-              "background": (187,187,187)}
+    assert vars(main_parser.parse_args(args)) == result
 
-    assert scale.parse(args) == result
+    args = ["scale", "image.jpg", "2", "--save_as=png",
+            "--save_folder=home/output", "--mode=RGB", "--background=#bbb",
+            "--resample=BOX", "-optimize"]
+    result = {"command": "scale", "path": "image.jpg", "scalar": 2,
+              "save_as": "png", "save_folder": "home/output", "mode": "RGB",
+              "resample": "BOX", "optimize": True, "background": (187,187,187)
+              }
+
+    assert vars(main_parser.parse_args(args)) == result
+
 
 def test_scale():
     im = Image.new("RGB", (300, 100))

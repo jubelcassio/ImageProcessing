@@ -9,6 +9,10 @@ def colorinfo(im, box, pixel):
         crop = im.crop(box)
         colors = crop.getcolors()
 
+    if colors == None:
+        print("{} has too many colors.".format(im.filename))
+        return
+
     info = ""
     for query in colors:
         info += "{} pixels of {} color\n".format(query[0], query[1])
@@ -20,17 +24,14 @@ def colorinfo(im, box, pixel):
         print("The pixel at {} has {} color".format(pixel, pixcolor))
 
 
-def run(path, box, pixel):
+def run(path, namespace):
     im = util.open_image(path)
     if im is not None:
-        colorinfo(im, box, pixel)
+        colorinfo(im, namespace.box, namespace.pixel)
 
-
-def parse(user_args):
-    ## Parse the inputs
-    parser = argparse.ArgumentParser(prog="colorinfo")
-
-    parser.add_argument('--box', type=util.rectangular_box_type)
-    parser.add_argument('--pixel', type=util.coordinates_type)
-
-    return vars(parser.parse_args(user_args))
+def subparser(subparser):
+    colorinfo_parser = subparser.add_parser("colorinfo")
+    colorinfo_parser.set_defaults(command="colorinfo")
+    colorinfo_parser.add_argument('path')
+    colorinfo_parser.add_argument('--box', type=util.rectangular_box_type)
+    colorinfo_parser.add_argument('--pixel', type=util.coordinates_type)

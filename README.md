@@ -200,7 +200,7 @@ Optimize all images of a directory and save them as jpg:
 `process_img optimize /images --save_as=jpg`  
 
 
-* **colorswap**: Replaces the color of all pixels of the image with another  
+* **colorswap**: Replaces the color of all pixels of the image with another.  
 `process_img colorswap [file/directory] [before_color] [after_color] [optional arguments]`  
 `[before_color]` and `[after_color]` must be a list of integers for each color value or a hexadecimal color name between quotes.  
 **optional arguments**  
@@ -219,7 +219,7 @@ Swaps the transparent background of an image with a white one and save them as o
 `process_img colorswap transparent_bg_image.png 255,255,255,0 255,255,255,255 --save_as=jpg -optimize`  
 
 
-* **colorinfo**: Counts how many pixels of each color are in the image or in the given area from the image  
+* **colorinfo**: Counts how many pixels of each color are in the image or in the given area from the image.  
 `process_img colorinfo [file/directory] [optional arguments]`  
 **optional arguments**  
 `[--box]` A box of coordinates (left, upper, right, lower) representing the area to count the pixels  
