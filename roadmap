@@ -9,26 +9,14 @@ Can be called from the root to affect files anywhere in the system.
 Should Have:
 Integration Tests
 
-A --help optional argument that can support different outputs for every module.
-    The planned workflow is as follows:
-    >> process_img.py --help
-        # Describes how to use the program and lists all modules with
-        a brief description for each module
-
-    >> process_img.py --help [module]
-    >> process_img.py [module] --help
-        # Outputs what the modules does and the available arguments
-        and optional arguments with a brief description of each
-    I want to have a json file that can be easily queried and outputed to the
-    user.
-
-
 Could Have:
 Add a Threshold of hue values for the colorswap module.
 Filter input images by name (with regex?).
 Filter input images by file type.
 Works on Linux and Windows.
+Compile the program into a single binary or executable file, to allow
+easier installation/usage.
 
-On the same line of tougth of the --help functionality described above,
-we can have commands to display the program's LICENSE, change a default
-setting (such as the default color used on removal of backgrouds).
+Commands to display the program's LICENSE, change a default setting
+(such as the default color used on removal of backgrouds) among
+other things

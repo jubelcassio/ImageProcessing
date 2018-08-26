@@ -57,6 +57,12 @@ Or by summoning python manually:
 `python process_img.py [action] [file/directory] [arguments] `  
 \[file/directory] must be a single image or a directory containing image files to be processed.
 
+Also you can use:  
+`python process_img.py -h `  
+For a general help message or 
+`python process_img.py [action] -h `  
+For a help message about an specific module
+
 
 #### Supported Formats:
 The supported file types for both, reading and writing are:  
