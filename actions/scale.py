@@ -1,8 +1,9 @@
 import argparse
 import os
-from actions import supported_formats
 from actions import all_modes
+from actions import help_dict
 from actions import resampling_filters
+from actions import supported_formats
 import util
 
 
@@ -21,21 +22,27 @@ def scale(im, scalar, resample):
 
 
 def subparser(subparser):
-    scale_parser = subparser.add_parser("scale")
+    my_help = help_dict["modules"]["scale"]
+    scale_parser = subparser.add_parser("scale", help=my_help["general"])
 
+    ## This is used to identify which command is being run
     scale_parser.set_defaults(command="scale")
 
-    scale_parser.add_argument('path')
-    scale_parser.add_argument('scalar', type=float)
-    scale_parser.add_argument('--save_folder', type=str, default=None)
+    scale_parser.add_argument('path', help=my_help["path"])
+    scale_parser.add_argument('scalar', type=float, help=my_help["scalar"])
+    scale_parser.add_argument('--save_folder', type=str, default=None,
+                               help=my_help["--save_folder"])
     scale_parser.add_argument('--save_as', type=str, choices=supported_formats,
-                        default=None)
-    scale_parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+                               default=None, help=my_help["--save_as"])
+    scale_parser.add_argument('--mode', type=str, choices=all_modes,
+                               default=None, help=my_help["--mode"])
     scale_parser.add_argument('--background', type=util.rgb_color_type,
-                        default="#fff")
+                               default="#fff", help=my_help["--background"])
+    scale_parser.add_argument('-optimize', action="store_true",
+                               help=my_help["-optimize"])
     scale_parser.add_argument('--resample', type=str, choices=resampling_filters,
-                        default=None)
-    scale_parser.add_argument('-optimize', action="store_true")
+                               default=None, help=my_help["--resample"])
+
 
 
 def run(path, namespace):

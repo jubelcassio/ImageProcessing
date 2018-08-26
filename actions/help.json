@@ -2,54 +2,123 @@
     "global": "python process_img.py [action] [file/directory] [arguments]\nAvailable actions:",
     "modules" :{
         "convert": {
-            "summarized": "Converts image(s) to given format.",
-            "verbose": []
+            "general": "Converts image(s) to given format.",
+
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.",
+            "-optimize": "If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images."
             },
         "resize": {
-            "summarized": "Resizes image(s) to given width and height.",
-            "verbose": []
-            },
-        "fit": {
-            "summarized": "Resize an image to a given width / height while maintaining its aspect ratio.",
-            "verbose": []
+            "general": "Resizes image(s) to given width and height.",
+
+            "width": "The width in pixels to resize the image(s) to.",
+            "height": "The height in pixels to resize the image(s) to.",
+            "--resample": "The resampling filter to be used when resizing the images.",
+
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "--save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.",
+            "-optimize": "If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images."
             },
         "scale": {
-            "summarized": "Scale image(s) by given scalar.",
-            "verbose": []
+            "general": "Scale image(s) by given scalar.",
+            
+            "scalar": "The value to scale each image's dimensions by.",
+            "--resample": "The resampling filter to be used when resizing the images.",
+
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "--save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.",
+            "-optimize": "If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images."
+            },
+        "fit": {
+            "general": "Resize an image to a given width / height while maintaining its aspect ratio.",
+
+            "width": "The width in pixels of the box to fit the image(s) into.",
+            "height": "The height in pixels of the box to fit the image(s) into.",
+            "--resample": "The resampling filter to be used when resizing the images.",
+            "--color": "The color to fill the offset area of the resulting image.",
+
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "--save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.",
+            "-optimize": "If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images."
             },
         "info": {
-            "summarized": "Prints the path, format, color mode and dimensions of the given image.",
-            "verbose": []
-            },
-        "optimize": {
-            "summarized": "Minimizes the image size.",
-            "verbose": []
-            },
-        "invert": {
-            "summarized": "Invert the colors of the image.",
-            "verbose": []
-            },
-        "mirror": {
-            "summarized": "Mirrors the images, by horizontal, vertical or both axis.",
-            "verbose": []
+            "general": "Prints the path, format, color mode and dimensions of the given image.",
+            
+            "path": "The path to a image file or the directory with the image files to be processed."
             },
         "dessaturate": {
-            "summarized": "Grayscales the image.",
-            "verbose": []
+            "general": "Grayscales the image.",
+            
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "--save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.",
+            "-optimize": "If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images."
+            },
+        "invert": {
+            "general": "Invert the colors of the image.",
+            
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "--save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.",
+            "-optimize": "If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images."
+            },
+        "mirror": {
+            "general": "Mirrors the images, by horizontal, vertical or both axis.",
+            
+            "mirror_mode": "How the image shall be mirrored. Can be 'v' for vertical, 'h' for horizontal, or 'vh' / 'hv' for both.",
+
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "--save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.",
+            "-optimize": "If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images."
+            },
+        "optimize": {
+            "general": "Minimizes the image size.",
+            
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "--save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color."
             },
         "colorswap": {
-            "summarized": "Replaces the color of all pixels of the image with another",
-            "verbose": []
+            "general": "Replaces the color of all pixels of the image with another",
+
+            "before_color": "The color to be replaced.",
+            "after_color": "The color to use as replacement.",
+            
+            "path": "The path to a image file or the directory with the image files to be processed.",
+            "--save_as": "The format to save the images as.",
+            "--save_folder": "The directory where the images will be saved.",
+            "--mode": "The color mode to use when saving the image.",
+            "--background": "The color to use when saving a image with a mode that has alpha channel to a image mode that does NOT have alpha channel. The transparent area on the original image will be filled with the given color.",
+            "-optimize": "If passed, the resulting images will be optimized for a smaller file size. Only works for jpg and png images."
             },
         "colorinfo": {
-            "summarized": "Counts how many pixels of each color are in the image or in the given area from the image",
-            "verbose": [
-                        "colorinfo: Counts how many pixels of each color are in the image or in the given area from the image.\n",
-                        "    process_img colorinfo [file/directory] [optional arguments]\n",
-                        "optional arguments\n",
-                        "    [--box] A box of coordinates (left, upper, right, lower) representing the area to count the pixels\n",
-                        "    [--pixel] The coordinates of a single pixel, prints the color of that pixel.\n"
-                    ]
+            "general": "Counts how many pixels of each color are in the image or in the given area from the image.",
+
+            "--box": "A box of coordinates (left, upper, right, lower) representing the area to count the pixels.",
+            "--pixel": "The coordinates of a single pixel, prints the color of that pixel.",
+
+            "path": "The path to a image file or the directory with the image files to be processed."
             }
     }
 }

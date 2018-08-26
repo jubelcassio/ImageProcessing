@@ -1,6 +1,7 @@
 import argparse
 import os
 import util
+from actions import help_dict
 
 def info(im):
     infotext ="\n{}\nformat: {}\nmode: {}\nsize: {}"
@@ -13,8 +14,10 @@ def run(path, namespace):
         info(im)
 
 def subparser(subparser):
-    info_parser = subparser.add_parser("info")
+    my_help = help_dict["modules"]["info"]
+    info_parser = subparser.add_parser("info", help=my_help["general"])
 
+    ## This is used to identify which command is being run
     info_parser.set_defaults(command="info")
 
-    info_parser.add_argument('path')
+    info_parser.add_argument('path', help=my_help["path"])

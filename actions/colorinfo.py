@@ -1,6 +1,7 @@
 import argparse
 import os
 import util
+from actions import help_dict
 
 def colorinfo(im, box, pixel):
     if box == None:
@@ -30,8 +31,15 @@ def run(path, namespace):
         colorinfo(im, namespace.box, namespace.pixel)
 
 def subparser(subparser):
-    colorinfo_parser = subparser.add_parser("colorinfo")
+    my_help = help_dict["modules"]["colorinfo"]
+    colorinfo_parser = subparser.add_parser("colorinfo",
+                                            help=my_help["general"])
+
+    ## This is used to identify which command is being run
     colorinfo_parser.set_defaults(command="colorinfo")
-    colorinfo_parser.add_argument('path')
-    colorinfo_parser.add_argument('--box', type=util.rectangular_box_type)
-    colorinfo_parser.add_argument('--pixel', type=util.coordinates_type)
+
+    colorinfo_parser.add_argument('path', help=my_help["path"])
+    colorinfo_parser.add_argument('--box', type=util.rectangular_box_type,
+                                  help=my_help["--box"])
+    colorinfo_parser.add_argument('--pixel', type=util.coordinates_type,
+                                  help=my_help["--pixel"])

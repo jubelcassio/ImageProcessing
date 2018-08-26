@@ -1,3 +1,5 @@
+import json
+
 supported_formats = ["bmp","eps","gif","ico","jpg","jpeg","png","tiff",
                      "BMP","EPS","GIF","ICO","JPG","JPEG","PNG","TIFF"]
 supported_modes = {
@@ -14,8 +16,14 @@ all_modes = ["1", "L", "LAB", "P", "CMYK", "RGB", "RGBA"]
 resampling_filters = ["NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX",
                       "HAMMING"]
 
+help_dict = {}
+with open("actions/help.json") as f:
+    help_dict = json.load(f)
+    f.close()
+
+
 __all__ = ['convert', 'resize', 'fit', 'scale', 'info', 'optimize', 'invert',
-           'mirror', 'dessaturate', 'colorswap', 'colorinfo', 'help_module']
+           'mirror', 'dessaturate', 'colorswap', 'colorinfo']
 
 from . import *
 
@@ -30,6 +38,5 @@ modules = {
     "mirror" : mirror,
     "dessaturate" : dessaturate,
     "colorswap" : colorswap,
-    "colorinfo" : colorinfo,
-    "help" : help_module
+    "colorinfo" : colorinfo
     }

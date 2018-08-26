@@ -1,7 +1,8 @@
 import argparse
 import os
-from actions import supported_formats
 from actions import all_modes
+from actions import help_dict
+from actions import supported_formats
 import util
 from PIL import ImageColor
 
@@ -33,22 +34,29 @@ def run(path, namespace):
 
 
 def subparser(subparser):
-    colorswap_parser = subparser.add_parser("colorswap")
+    my_help = help_dict["modules"]["colorswap"]
+    colorswap_parser = subparser.add_parser("colorswap", help=my_help["general"])
 
     ## This is used to identify which command is being run
     colorswap_parser.set_defaults(command="colorswap")
 
-    colorswap_parser.add_argument('path')
+    colorswap_parser.add_argument('path', help=my_help["path"])
     ## NOTE: When using hex color codes as arguments for before and after
     # colors, use quotes around the color name (Example: "#ff0000ff").
     # Otherwise sys.argv will not read the arguments corretly.
     # I believe the reason is that sys.argv will think everything after the
     # pound sign is a python comment, except if the argument is inside quotes.
-    colorswap_parser.add_argument('before_color', type=util.rgb_color_type)
-    colorswap_parser.add_argument('after_color', type=util.rgb_color_type)
-    colorswap_parser.add_argument('--save_as', type=str, choices=supported_formats)
-    colorswap_parser.add_argument('--save_folder', type=str, default=None)
-    colorswap_parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+    colorswap_parser.add_argument('before_color', type=util.rgb_color_type,
+                                  help=my_help["before_color"])
+    colorswap_parser.add_argument('after_color', type=util.rgb_color_type,
+                                  help=my_help["after_color"])
+    colorswap_parser.add_argument('--save_folder', type=str, default=None,
+                               help=my_help["--save_folder"])
+    colorswap_parser.add_argument('--save_as', type=str, choices=supported_formats,
+                               default=None, help=my_help["--save_as"])
+    colorswap_parser.add_argument('--mode', type=str, choices=all_modes,
+                               default=None, help=my_help["--mode"])
     colorswap_parser.add_argument('--background', type=util.rgb_color_type,
-                                  default="#fff")
-    colorswap_parser.add_argument('-optimize', action="store_true")
+                               default="#fff", help=my_help["--background"])
+    colorswap_parser.add_argument('-optimize', action="store_true",
+                               help=my_help["-optimize"])

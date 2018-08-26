@@ -1,5 +1,6 @@
-from actions import supported_formats
 from actions import all_modes
+from actions import help_dict
+from actions import supported_formats
 import argparse
 import util
 
@@ -15,17 +16,23 @@ def dessaturate(im):
 
 
 def subparser(subparser):
-    dessaturate_parser = subparser.add_parser("dessaturate")
+    my_help = help_dict["modules"]["dessaturate"]
+    dessaturate_parser = subparser.add_parser("dessaturate", help=my_help["general"])
+
+    ## This is used to identify which command is being run
     dessaturate_parser.set_defaults(command="dessaturate")
 
-    dessaturate_parser.add_argument('path')
-    dessaturate_parser.add_argument('--save_folder', type=str, default=None)
+    dessaturate_parser.add_argument('path', help=my_help["path"])
+    dessaturate_parser.add_argument('--save_folder', type=str, default=None,
+                               help=my_help["--save_folder"])
     dessaturate_parser.add_argument('--save_as', type=str, choices=supported_formats,
-                                    default=None)
-    dessaturate_parser.add_argument('--mode', type=str, choices=all_modes, default=None)
+                               default=None, help=my_help["--save_as"])
+    dessaturate_parser.add_argument('--mode', type=str, choices=all_modes,
+                               default=None, help=my_help["--mode"])
     dessaturate_parser.add_argument('--background', type=util.rgb_color_type,
-                                    default="#fff")
-    dessaturate_parser.add_argument('-optimize', action="store_true")
+                               default="#fff", help=my_help["--background"])
+    dessaturate_parser.add_argument('-optimize', action="store_true",
+                               help=my_help["-optimize"])
 
 
 def run(path, namespace):
