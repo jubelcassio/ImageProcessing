@@ -38,3 +38,6 @@ def test_scale():
     # Asserts the resulting image is at least 1x1 px
     scale_im = scale.scale(im, 0, None)
     assert scale_im.size == (1, 1)
+
+    scale_im = scale.scale(im, 2.0, "BICUBIC")
+    assert scale_im.size == (600, 200)
