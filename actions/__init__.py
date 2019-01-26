@@ -1,4 +1,7 @@
 import json
+import os
+
+cur_dir = os.path.dirname(os.path.realpath(__file__))
 
 supported_formats = ["bmp","eps","gif","ico","jpg","jpeg","png","tiff",
                      "BMP","EPS","GIF","ICO","JPG","JPEG","PNG","TIFF"]
@@ -17,7 +20,7 @@ resampling_filters = ["NEAREST", "LANCZOS", "BILINEAR", "BICUBIC", "BOX",
                       "HAMMING"]
 
 help_dict = {}
-with open("actions/help.json") as f:
+with open(os.path.join(cur_dir, "help.json")) as f:
     help_dict = json.load(f)
     f.close()
 
